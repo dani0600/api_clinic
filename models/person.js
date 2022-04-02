@@ -1,11 +1,27 @@
-var mongoose = require("mongoose"),
-  Schema = mongoose.Schema;
+const { ObjectId } = require("mongodb");
+const db = require('./../app');
+const { personsCollectionName } = require('./../utils');
 
-var personSchema = new Schema({
-  birthDate: { type: Date },
-  age: { type: Number,  enum: ["Hombre", "Mujer", "No Binario"], },
-  postalCodeId: { type: String },
-  country: { type: String },
-});
+async function getAll() {
+    const collection = db.getCollection(personsCollectionName);
+    const aggCursor = await collection.aggregate([
+        {
+            $project: {
+                name: '$name'             
+            }
+        },
+        {
+            $sort: {
+                name: 1
+            }
+        }
+    ]);
+    return await aggCursor.toArray();
+}
 
-module.exports = mongoose.model("Person", personSchema);
+
+module.exports = {
+  getAll
+}
+
+
