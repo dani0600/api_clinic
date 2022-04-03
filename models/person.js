@@ -2,8 +2,40 @@ const { ObjectId } = require("mongodb");
 const db = require('./../app');
 const { checkString } = require('./../utils');
 const { personsCollectionName } = require('./../utils');
+var mongoose = require('mongoose');
 
-async function checkProperties(person){
+
+const personSchema = new mongoose.Schema({
+    birthdate: {
+      type: Date,
+      required: [true, 'Birthdate is needed']
+    },
+    age: {
+      type: Number,
+      required: [true, 'Age is needed']
+    },
+    sex: {
+      type: String,
+      enum: ['Male', 'Female', "No-binary"],
+      required: true,
+    },
+    postalcode: {
+        type: Number,
+        required: true
+    },
+    country: {
+        type: String
+    },
+    livingPlaces: {
+        type: Array
+    },
+    tumors: {
+        type: Array
+    }
+  });
+
+
+ function checkProperties(person){
   if (typeof person.birthdate !== 'date') {
       throw { 
           code: 400,
@@ -105,13 +137,16 @@ async function getAll() {
 }
 
 async function add(info) {
-  console.log(info);
-  const newId = ObjectId();
-  checkProperties(info);
+	console.log(info);
+  try{  
+    checkProperties(info);
+  }catch (error) {
+     throw(error.message);
+  } 
   const collection = db.getCollection(personsCollectionName);
   try {
     await collection.insertOne({
-      _id: newId, 
+      _id: ObjectId(), 
       birthdate: info.birthdate,
       age: info.age,
       sex: info.sex,
@@ -121,6 +156,7 @@ async function add(info) {
       tumors: info.tumors      
     });
   } catch (error) {
+      console.log(error)
       throw error;
   }
 }

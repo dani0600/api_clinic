@@ -15,7 +15,7 @@ router.get('/', async function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   try {
-      const persons = await personModel.add(req.query);
+      const persons = await personModel.add(req.body);
       res.status(200).send(persons);
   }
   catch(error){

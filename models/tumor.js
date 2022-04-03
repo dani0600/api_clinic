@@ -3,7 +3,7 @@ const db = require('./../app');
 const { checkString } = require('./../utils');
 const { tumorsCollectionName } = require('./../utils');
 
-async function checkProperties(tumor){
+function checkProperties(tumor){
   if (!checkString(tumor.person)) {
       throw { 
           code: 400,
@@ -55,7 +55,7 @@ async function checkProperties(tumor){
 }
 
 async function getAll() {
-  const collection = db.getCollection(personsCollectionName);
+  const collection = db.getCollection(tumorsCollectionName);
   const aggCursor = await collection.aggregate([
     {
       $project: {
@@ -95,12 +95,15 @@ async function getAll() {
 
 async function add(info) {
   console.log(info);
-  const newId = ObjectId();
-  checkProperties(info);
+  try{  
+    //checkProperties(info);
+  }catch (error) {
+     throw(error.message);
+  } 
   const collection = db.getCollection(tumorsCollectionName);
   try {
     await collection.insertOne({
-      _id: newId, 
+      _id: ObjectId(), 
       person: info.person,
       main: info.main,
       diagnoseYear: info.diagnoseYear,

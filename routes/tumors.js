@@ -15,7 +15,7 @@ router.get('/', async function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   try {
-      const tumor = await tumorModel.add(req.query);
+      const tumor = await tumorModel.add(req.body);
       res.status(200).send(tumor);
   }
   catch(error){
