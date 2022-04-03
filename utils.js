@@ -1,4 +1,6 @@
 const personsCollectionName = 'persons';
+const tumorsCollectionName = 'tumors';
+
 
 function checkString(string) {
     return typeof string === 'string' && string.trim().length > 0
@@ -6,5 +8,6 @@ function checkString(string) {
 
 module.exports = {
     checkString,
-    personsCollectionName
+    personsCollectionName,
+    tumorsCollectionName
 }

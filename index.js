@@ -5,6 +5,7 @@ const db = require("./app");
 
 // Routes
 const persons = require("./routes/persons");
+const tumors = require("./routes/tumors");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,7 +22,7 @@ app.use(cors({
 
 // Routers
 app.use('/persons', persons);
-
+app.use('/tumors', tumors);
 
 app.get('/', (req, res) => res.sendStatus(200));
 
