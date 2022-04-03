@@ -108,7 +108,7 @@ async function add(info) {
   console.log(info);
   const newId = ObjectId();
   checkProperties(info);
-  const collection = db.getCollection(poisCollectionName);
+  const collection = db.getCollection(personsCollectionName);
   try {
     await collection.insertOne({
       _id: newId, 
