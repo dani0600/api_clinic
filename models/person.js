@@ -81,10 +81,10 @@ function checkProperties(person){
 }
 
 function checkDocumentProperties(person){
-  if (typeof person.birthdate !== 'date') {
+  if (!checkString(person.birthdate)) {
       throw { 
           code: 400,
-          message: 'Route: The field birthdate is required and must be a date'
+          message: 'Route: The field birthdate is required and must be a string'
       }
   }
   if (typeof person.age !== 'number') {
@@ -129,32 +129,32 @@ function checkDocumentProperties(person){
         message: 'Route: The field tumors is required and must be an array of at least an element'
     }
   }
-  checkToxics(info.toxics);
+  checkToxics(person.toxics);
 }
 
 function checkToxics(toxics){
   if (typeof toxics.smoker !== 'boolean') {
     throw { 
         code: 400,
-        message: 'Route: The field birthdate is required and must be a date'
+        message: 'Route: The field smoker is required and must be a boolean'
     }
   }
   if(toxics.smoker && typeof toxics.startAge !== 'number'){
     throw { 
       code: 400,
-      message: 'Route: The field birthdate is required and must be a date'
+      message: 'Route: The field Start Age is required and must be a number'
     }
   }
   if(toxics.smoker && typeof toxics.endAge !== 'number'){
     throw { 
       code: 400,
-      message: 'Route: The field birthdate is required and must be a date'
+      message: 'Route: The field End Age is required and must be a number'
     }
   }
   if(toxics.smoker && typeof toxics.avgCigarrettes !== 'number'){
     throw { 
       code: 400,
-      message: 'Route: The field birthdate is required and must be a date'
+      message: 'Route: The field Average Cigarrettes is required and must be a number'
     }
   }
   if (!toxics.otherProducts || !Array.isArray(toxics.otherProducts)) {
@@ -166,7 +166,7 @@ function checkToxics(toxics){
   if (typeof toxics.nearbyRoad !== 'boolean') {
     throw { 
         code: 400,
-        message: 'Route: The field birthdate is required and must be a date'
+        message: 'Route: The field Nearby Road is required and must be a boolean'
     }
   }
 }
@@ -273,9 +273,9 @@ async function addDocument(info) {
       lungDiseases: info.lungDiseases,
       toxics: {
         smoker: info.toxics.smoker,
-        startAge: smoker ? info.toxics.startAge : null,
-        endAge:  smoker ? info.toxics.endAge : null,
-        avgCigarrettes: smoker ? info.toxics.avgCigarrettes : null,
+        startAge: info.toxics.smoker ? info.toxics.startAge : null,
+        endAge:  info.toxics.smoker ? info.toxics.endAge : null,
+        avgCigarrettes: info.toxics.smoker ? info.toxics.avgCigarrettes : null,
         otherProducts: info.toxics.otherProducts,
         nearbyRoad: info.toxics.nearbyRoad
       },
@@ -293,7 +293,8 @@ async function addDocument(info) {
 module.exports = {
   checkProperties,
   getAll,
-  add
+  add,
+  addDocument
 }
 
 
