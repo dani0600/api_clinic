@@ -23,4 +23,14 @@ router.post('/', async function(req, res, next) {
   }
 })
 
+router.post('/upload', async function(req, res, next) {
+  try {
+      const persons = await personModel.addDocument(req.body);
+      res.status(200).send(persons);
+  }
+  catch(error){
+      next(error);
+  }
+})
+
 module.exports = router;

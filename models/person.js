@@ -80,6 +80,97 @@ function checkProperties(person){
   }
 }
 
+function checkDocumentProperties(person){
+  if (typeof person.birthdate !== 'date') {
+      throw { 
+          code: 400,
+          message: 'Route: The field birthdate is required and must be a date'
+      }
+  }
+  if (typeof person.age !== 'number') {
+      throw { 
+          code: 400,
+          message: 'Route: The field age is required and must be a number'
+      }
+  }
+  if (!checkString(person.sex)) {
+      throw { 
+          code: 400,
+          message: 'Route: The field sex is required and must be a non-empty string'
+      }
+  }
+  if (!checkString(person.postalcode)) {
+      throw { 
+          code: 400,
+          message: 'Route: The field Postal Code is required and must be a non-empty string'
+      }
+  }
+  if (!checkString(person.country)) {
+    throw { 
+        code: 400,
+        message: 'Route: The field country is required and must be a non-empty string'
+    }
+  }
+  if (!person.livingPlaces || !Array.isArray(person.livingPlaces) || person.livingPlaces.length === 0) {
+      throw { 
+          code: 400,
+          message: 'Route: The field Living Places is required and must be an array of at least an element'
+      }
+  }
+  if (!person.tumors || !Array.isArray(person.tumors) || person.tumors.length === 0) {
+    throw { 
+        code: 400,
+        message: 'Route: The field tumors is required and must be an array of at least an element'
+    }
+  }
+  if (!person.worklife || !Array.isArray(person.worklife) || person.worklife.length === 0) {
+    throw { 
+        code: 400,
+        message: 'Route: The field tumors is required and must be an array of at least an element'
+    }
+  }
+  checkToxics(info.toxics);
+}
+
+function checkToxics(toxics){
+  if (typeof toxics.smoker !== 'boolean') {
+    throw { 
+        code: 400,
+        message: 'Route: The field birthdate is required and must be a date'
+    }
+  }
+  if(toxics.smoker && typeof toxics.startAge !== 'number'){
+    throw { 
+      code: 400,
+      message: 'Route: The field birthdate is required and must be a date'
+    }
+  }
+  if(toxics.smoker && typeof toxics.endAge !== 'number'){
+    throw { 
+      code: 400,
+      message: 'Route: The field birthdate is required and must be a date'
+    }
+  }
+  if(toxics.smoker && typeof toxics.avgCigarrettes !== 'number'){
+    throw { 
+      code: 400,
+      message: 'Route: The field birthdate is required and must be a date'
+    }
+  }
+  if (!toxics.otherProducts || !Array.isArray(toxics.otherProducts)) {
+    throw { 
+        code: 400,
+        message: 'Route: The field Living Places is required and must be an array of at least an element'
+    }
+  }
+  if (typeof toxics.nearbyRoad !== 'boolean') {
+    throw { 
+        code: 400,
+        message: 'Route: The field birthdate is required and must be a date'
+    }
+  }
+}
+
 async function getAll() {
   const collection = db.getCollection(personsCollectionName);
   const aggCursor = await collection.aggregate([
@@ -154,6 +245,43 @@ async function add(info) {
       country: info.country,
       livingPlaces: info.livingPlaces,
       tumors: info.tumors      
+    });
+  } catch (error) {
+      console.log(error)
+      throw error;
+  }
+}
+
+async function addDocument(info) {
+	console.log(info);
+  try{  
+    checkDocumentProperties(info);
+  }catch (error) {
+     throw(error.message);
+  } 
+  const collection = db.getCollection(personsCollectionName);
+  try {
+    await collection.insertOne({
+      _id: ObjectId(), 
+      birthdate: info.birthdate,
+      age: info.age,
+      sex: info.sex,
+      postalcode: info.postalcode,
+      country: info.country,
+      livingPlaces: info.livingPlaces,
+      tumors: info.tumors,
+      lungDiseases: info.lungDiseases,
+      toxics: {
+        smoker: info.toxics.smoker,
+        startAge: smoker ? info.toxics.startAge : null,
+        endAge:  smoker ? info.toxics.endAge : null,
+        avgCigarrettes: smoker ? info.toxics.avgCigarrettes : null,
+        otherProducts: info.toxics.otherProducts,
+        nearbyRoad: info.toxics.nearbyRoad
+      },
+      worklife: info.worklife,
+      carcinomas: info.carcinomas,
+      relatives: info.relatives,
     });
   } catch (error) {
       console.log(error)
