@@ -2,7 +2,7 @@ const personsCollectionName = 'persons';
 const tumorsCollectionName = 'tumors';
 const metastasisCollectionName = 'metastasis';
 const surgeriesCollectionName = 'surgeries';
-const livingPlacesCollectionName ='livingPlaces';
+const livingPlacesCollectionName ='livingplaces';
 
 
 
@@ -17,5 +17,4 @@ module.exports = {
     metastasisCollectionName,
     surgeriesCollectionName,
     livingPlacesCollectionName
-
 }

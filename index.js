@@ -6,7 +6,7 @@ const db = require("./app");
 // Routes
 const persons = require("./routes/persons");
 const tumors = require("./routes/tumors");
-const surgeries = require("./routes/surgery");
+const surgeries = require("./routes/surgeries");
 const metastasis = require("./routes/metastasis");
 const livingPlaces = require("./routes/livingplaces");
 
@@ -26,6 +26,10 @@ app.use(cors({
 // Routers
 app.use('/persons', persons);
 app.use('/tumors', tumors);
+app.use('/metastasis', metastasis);
+app.use('/surgeries', surgeries);
+app.use('/livingplaces', livingPlaces);
+
 
 app.get('/', (req, res) => res.sendStatus(200));
 
