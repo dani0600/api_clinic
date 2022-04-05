@@ -10,6 +10,7 @@ const surgeries = require("./routes/surgeries");
 const metastasis = require("./routes/metastasis");
 const livingPlaces = require("./routes/livingplaces");
 const relatives = require("./routes/relatives");
+const postalCodes = require("./routes/postalCodes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -31,6 +32,7 @@ app.use('/metastasis', metastasis);
 app.use('/surgeries', surgeries);
 app.use('/livingplaces', livingPlaces);
 app.use('/relatives', relatives);
+app.use('/postalCodes', postalCodes);
 
 
 app.get('/', (req, res) => res.sendStatus(200));
