@@ -1,5 +1,9 @@
 const personsCollectionName = 'persons';
 const tumorsCollectionName = 'tumors';
+const metastasisCollectionName = 'metastasis';
+const surgeriesCollectionName = 'surgeries';
+const livingPlacesCollectionName ='livingPlaces';
+
 
 
 function checkString(string) {
@@ -9,5 +13,9 @@ function checkString(string) {
 module.exports = {
     checkString,
     personsCollectionName,
-    tumorsCollectionName
+    tumorsCollectionName,
+    metastasisCollectionName,
+    surgeriesCollectionName,
+    livingPlacesCollectionName
+
 }

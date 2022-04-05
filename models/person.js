@@ -2,40 +2,10 @@ const { ObjectId } = require("mongodb");
 const db = require('./../app');
 const { checkString } = require('./../utils');
 const { personsCollectionName } = require('./../utils');
-var mongoose = require('mongoose');
 
 
-const personSchema = new mongoose.Schema({
-    birthdate: {
-      type: Date,
-      required: [true, 'Birthdate is needed']
-    },
-    age: {
-      type: Number,
-      required: [true, 'Age is needed']
-    },
-    sex: {
-      type: String,
-      enum: ['Male', 'Female', "No-binary"],
-      required: true,
-    },
-    postalcode: {
-        type: Number,
-        required: true
-    },
-    country: {
-        type: String
-    },
-    livingPlaces: {
-        type: Array
-    },
-    tumors: {
-        type: Array
-    }
-  });
 
-
- function checkProperties(person){
+function checkProperties(person){
   if (typeof person.birthdate !== 'date') {
       throw { 
           code: 400,

@@ -6,6 +6,9 @@ const db = require("./app");
 // Routes
 const persons = require("./routes/persons");
 const tumors = require("./routes/tumors");
+const surgeries = require("./routes/surgery");
+const metastasis = require("./routes/metastasis");
+const livingPlaces = require("./routes/livingplaces");
 
 const app = express();
 const port = process.env.PORT || 3000;
