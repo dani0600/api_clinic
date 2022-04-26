@@ -1,12 +1,12 @@
 const https = require("https");
 const http = require('http');
 
-
 const express = require("express");
-const cors = require('cors');
-require("dotenv").config();
-
+const mongoose = require("mongoose");
+const cors = require("cors");
 const db = require("./app");
+
+require("dotenv").config();
 
 // Routes
 const persons = require("./routes/persons");
@@ -19,18 +19,6 @@ const postalCodes = require("./routes/postalCodes");
 const forms = require("./routes/forms");
 
 const app = express();
-const port = process.env.PORT || 4000;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://localhost:4000'
-    ],
-    optionsSuccessStatus: 200 // some legacy browsers didn't work with 204
-}));
 
 // Routers
 app.use('/persons', persons);
@@ -42,20 +30,28 @@ app.use('/relatives', relatives);
 app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
 
+app.use(cors({
+   origin: "https://git.heroku.com/apiclinic" ,
+   optionsSuccessStatus: 200 // some legacy browsers didn't work with 204
+  }
+));
+
+app.use(express.json()); //parses incoming requests as JSON
+
 //Index page (static HTML)
 app.route("/").get(function (req, res) {
-    res.sendFile(process.cwd() + "/index.html");
+  res.sendFile(process.cwd() + "/index.html");
 });
 
+//establish connection to database
 (async function start() {
-    try{
-        await db.connect();
-    }
-    catch (error) {
-        console.error(error);
-    }
+  try{
+      await db.connect();
+  }
+  catch (error) {
+      console.error(error);
+  }
 })()
-
 
 //app.listen(process.env.PORT || 4000);
 //https options

@@ -1,8 +1,9 @@
 const { MongoClient } = require("mongodb");
+require("dotenv").config();
 
-const mongoAddress = process.env.MONGO_ADDRESS || "cluster0.izfjc.mongodb.net/api-clinic?retryWrites=true&w=majority";
-const mongoUser = encodeURIComponent(process.env.MONGO_USER || "pae2022");
-const mongoPass = encodeURIComponent(process.env.MONGO_PASS || "PAE_2022");
+const mongoAddress = process.env.MONGO_ADDRESS;
+const mongoUser = encodeURIComponent(process.env.MONGO_USER);
+const mongoPass = encodeURIComponent(process.env.MONGO_PASS);
 const mongoUri = `mongodb+srv://${mongoUser}:${mongoPass}@${mongoAddress}`;
 
 const mongoClient = new MongoClient(mongoUri, {
