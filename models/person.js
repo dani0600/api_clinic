@@ -227,28 +227,35 @@ async function getAll() {
   return await aggCursor.toArray();
 }
 
-async function add(info) {
+async function add(info, tumIds, relIds, placeIds, workObj) {
 	console.log(info);
   try{  
-    checkProperties(info);
-  }catch (error) {
-     throw(error.message);
-  } 
-  const collection = db.getCollection(personsCollectionName);
-  try {
-    await collection.insertOne({
-      _id: ObjectId(), 
-      birthdate: info.birthdate,
-      age: info.age,
-      sex: info.sex,
-      postalcode: info.postalcode,
-      country: info.country,
-      livingPlaces: info.livingPlaces,
-      tumors: info.tumors      
-    });
+    const collection = db.getCollection(personsCollectionName);
+        await collection.insertOne({
+            _id: info._id, 
+            birthdate: info.birthdate,
+            age: info.age,
+            sex: info.sex,
+            postalcode: info.postalcode,
+            country: info.country,
+            livingPlaces: placeIds,
+            tumors: tumIds,
+            lungDiseases: info.lungDiseases,
+            toxics: {
+                smoker: info.toxics.smoker,
+                startAge: info.toxics.smoker ? info.toxics.startAge : null,
+                endAge:  info.toxics.smoker ? info.toxics.endAge : null,
+                avgCigarrettes: info.toxics.smoker ? info.toxics.avgCigarrettes : null,
+                otherProducts: info.toxics.otherProducts,
+                nearbyRoad: info.toxics.nearbyRoad
+            },
+            worklife: workObj,
+            carcinomas: info.carcinomas,
+            relatives: relIds,
+        });
   } catch (error) {
-      console.log(error)
-      throw error;
+        console.log(error)
+        throw error;
   }
 }
 

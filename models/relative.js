@@ -73,27 +73,23 @@ async function getAll() {
   return await aggCursor.toArray();
 }
 
-async function add(info) {
-	console.log(info);
-  try{  
-    checkProperties(info);
-  }catch (error) {
-    throw(error.message);
-  } 
-  const collection = db.getCollection(relativesCollectionName);
-  try {
-    await collection.insertOne({
-      _id: ObjectId(), 
-      relation: info.relation,
-      age: info.age,
-      alive: info.alive,
-      ageOfDeath: info.ageOfDeath,
-      tumor: info.tumor   
-    });
-  } catch (error) {
-      console.log(error)
-      throw error;
-  }
+async function add(relative) {
+	const collection = db.getCollection(relativesCollectionName);
+    try{
+        await collection.insertOne({
+            _id: relative._id,
+            person: relative.person,
+            relation: relative.relation,
+            age: relative.age,
+            survived: relative.survived,
+            ageOfDeath: relative.ageOfDeath,
+            tumors: relative.tumors  
+        })
+    }
+    catch(error){
+        console.log(error);
+        throw error;
+    }
 }
 
 

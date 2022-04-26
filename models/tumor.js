@@ -93,30 +93,25 @@ async function getAll() {
   return await aggCursor.toArray();
 }
 
-async function add(info) {
-  console.log(info);
-  try{  
-    //checkProperties(info);
-  }catch (error) {
-     throw(error.message);
-  } 
+async function add(tumor) {
   const collection = db.getCollection(tumorsCollectionName);
-  try {
-    await collection.insertOne({
-      _id: ObjectId(), 
-      person: info.person,
-      main: info.main,
-      diagnoseYear: info.diagnoseYear,
-      type: info.type,
-      surgery: info.surgery,
-      mutation: info.mutations,
-      metastasis: info.metastasis
-    });
-  } catch (error) {
-      throw error;
-  }
+    try{
+        await collection.insertOne({
+            _id: tumor._id,
+            person: tumor.person,
+            main: tumor.main,
+            diagnoseYear: tumor.diagnoseYear,
+            type: tumor.type,
+            surgery: tumor.surgery,
+            mutations: tumor.mutations,
+            metastasis: tumor.metastasis
+        })
+    }
+    catch(error){
+        console.log(error);
+        throw error;
+    }
 }
-
 
 module.exports = {
   checkProperties,
