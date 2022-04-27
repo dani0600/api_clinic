@@ -5,6 +5,7 @@ const tumorModel = require('./../models/tumor');
 const relativeModel = require('./../models/relative');
 const placeModel = require('./../models/livingplace');
 const personModel = require('./../models/person');
+const postalCodeModel = require('./../models/postalCode');
 var mongoose = require('mongoose');
 
 
@@ -180,15 +181,31 @@ function buildLivingPlaces(info, id){
     let placesIds = [];
     let placesObj = [];
     for(let place of info.livingPlaces){
-        let livingPlace = {
-            _id: ObjectId(),
-            person: id,
-            country: place.country,
-            city: place.city,
-            postalCode: place.postalCode,
-            yearOfStart: place.yearOfStart,
-            yearOfEnd: place.yearOfEnd,
-            isPresent: place.isPresent  
+        if(place.country=="Spain" && postalCode){
+            let idPostalCode = postalCodeModel.getIdByPostalCode(postalCode)._id;
+            let livingPlace = {
+                _id: ObjectId(),
+                person: id,
+                country: place.country,
+                city: undefined,
+                postalCode: undefined,
+                idPostalCode: idPostalCode,
+                yearOfStart: place.yearOfStart,
+                yearOfEnd: place.yearOfEnd,
+                isPresent: place.isPresent  
+            }
+        }else{
+            let livingPlace = {
+                _id: ObjectId(),
+                person: id,
+                country: place.country,
+                city: place.city,
+                postalCode: place.postalCode,
+                idPostalCode: undefined,
+                yearOfStart: place.yearOfStart,
+                yearOfEnd: place.yearOfEnd,
+                isPresent: place.isPresent  
+            }
         }
         placesIds.push(livingPlace._id);
         placesObj.push(livingPlace);
