@@ -65,7 +65,7 @@ app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
 
 //JWT protection
-app.use(endpointProtection);
+//app.use(endpointProtection);
 
 //Index page (static HTML)
 app.route("/").get(function (req, res) {
