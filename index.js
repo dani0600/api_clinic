@@ -1,8 +1,6 @@
 const https = require("https");
 const http = require('http');
-const mongoose = require('mongoose');
 const usersDB = require('./auth/users/services/mongoose.service');
-
 
 const express = require("express");
 const cors = require('cors');
@@ -21,6 +19,9 @@ const postalCodes = require("./routes/postalCodes");
 const forms = require("./routes/forms");
 const AuthorizationRouter = require('./routes/auth');
 const UsersRouter = require('./routes/users');
+
+// Middleware
+const { endpointProtection } = require('./middlewares/endpoint.protection.middleware');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -51,6 +52,8 @@ app.use(function (req, res, next) {
     }
 });
 
+
+
 // Routers
 app.use('/persons', persons);
 app.use('/tumors', tumors);
@@ -60,6 +63,9 @@ app.use('/livingplaces', livingPlaces);
 app.use('/relatives', relatives);
 app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
+
+//JWT protection
+app.use(endpointProtection);
 
 //Index page (static HTML)
 app.route("/").get(function (req, res) {
@@ -99,5 +105,3 @@ http
             console.log('Server is running at port ' + process.env.HTTP_PORT);
     }
 );
-
-app.get('/', (req, res) => res.sendStatus(200));
