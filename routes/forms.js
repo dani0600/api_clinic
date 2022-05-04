@@ -1,6 +1,5 @@
 const express = require("express");
 const formModel = require('./../models/form');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
 
 const router = express.Router()
 
