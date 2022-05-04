@@ -238,7 +238,7 @@ async function add(info, tumIds, relIds, placeIds, workObj) {
             sex: info.sex,
             postalcode: info.postalcode,
             country: info.country,
-            livingPlaces: placeIds,
+            livingplaces: placeIds,
             tumors: tumIds,
             lungDiseases: info.lungDiseases,
             toxics: {
@@ -275,7 +275,7 @@ async function addDocument(info) {
       sex: info.sex,
       postalcode: info.postalcode,
       country: info.country,
-      livingPlaces: info.livingPlaces,
+      livingplaces: info.livingplaces,
       tumors: info.tumors,
       lungDiseases: info.lungDiseases,
       toxics: {
