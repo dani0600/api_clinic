@@ -182,13 +182,13 @@ async function getAll() {
           sex: 1,
           postalcode: 1,
           country: 1,
-          livingPlaces: {
+          livingplaces: {
               $map: {
-                  input: "$livingPlaces",
-                  as: 'livingPlaces',
+                  input: "$livingplaces",
+                  as: 'livingplaces',
                   in: {
                       $convert: {
-                          input: '$$livingPlaces',
+                          input: '$$livingplaces',
                           to: 'objectId'
                       }
                   }
@@ -210,10 +210,10 @@ async function getAll() {
     },
     {
         $lookup: {
-          from: "livingPlaces",
-          localField: "livingPlaces",
+          from: "livingplaces",
+          localField: "livingplaces",
           foreignField: "_id",
-          as: "livingPlaces"
+          as: "livingplaces"
         },
         $lookup: {
           from: "tumors",

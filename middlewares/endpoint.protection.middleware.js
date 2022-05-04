@@ -3,7 +3,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const endpointProtection = (req, res, next) => {
     // Agafem el token del header del request
-    const token = req.headers['access-token'];
+    const token = req.headers['authorization'];
 
     //Comprovem si no hi ha token
     if(!token) return res.status(401).json({error: 'Unprovided Token'});
