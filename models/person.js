@@ -182,6 +182,10 @@ async function getAll() {
           sex: 1,
           postalcode: 1,
           country: 1,
+          carcinomes: 1,
+          worklife: 1,
+          toxics: 1,
+          lungDiseases: 1,
           livingplaces: {
               $map: {
                   input: "$livingplaces",
@@ -195,18 +199,30 @@ async function getAll() {
               }
           },
           tumors: {
-            $map: {
-                input: "$tumors",
-                as: 'tumors',
-                in: {
-                    $convert: {
-                        input: '$$tumors',
-                        to: 'objectId'
-                    }
-                }
-            }
-        }
-        }
+              $map: {
+                  input: "$tumors",
+                  as: 'tumors',
+                  in: {
+                      $convert: {
+                          input: '$$tumors',
+                          to: 'objectId'
+                      }
+                  }
+              }
+          },
+          relatives: {
+              $map: {
+                  input: "$relatives",
+                  as: 'relatives',
+                  in: {
+                      $convert: {
+                          input: '$$relatives',
+                          to: 'objectId'
+                      }
+                  }
+              }
+          }
+      }
     },
     {
         $lookup: {
@@ -223,8 +239,15 @@ async function getAll() {
           foreignField: "_id",
           as: "tumors"
         }
+    },
+    {
+        $lookup: {
+          from: "relatives",
+          localField: "relatives",
+          foreignField: "_id",
+          as: "relatives"
+        }
     }
-
   ]);
   return await aggCursor.toArray();
 }
