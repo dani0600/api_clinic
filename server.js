@@ -1,8 +1,8 @@
 const https = require("https");
 const http = require('http');
+const usersDB = require('./auth/users/services/mongoose.service');
 
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const db = require("./app");
 
@@ -17,8 +17,18 @@ const livingPlaces = require("./routes/livingplaces");
 const relatives = require("./routes/relatives");
 const postalCodes = require("./routes/postalCodes");
 const forms = require("./routes/forms");
+const AuthorizationRouter = require('./routes/auth');
+const UsersRouter = require('./routes/users');
+
+//Middleware, JWT Protection
+const { endpointProtection } = require('./middlewares/endpoint.protection.middleware');
 
 const app = express();
+app.use(express.json()); //parses incoming requests as JSON
+app.use(express.urlencoded({ extended: false }));
+AuthorizationRouter.routesConfig(app);
+UsersRouter.routesConfig(app);
+
 
 // Routers
 app.use('/persons', persons);
@@ -36,7 +46,18 @@ app.use(cors({
   }
 ));
 
-app.use(express.json()); //parses incoming requests as JSON
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  res.header('Access-Control-Expose-Headers', 'Content-Length');
+  res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+  if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+  } else {
+      return next();
+  }
+});
 
 //Index page (static HTML)
 app.route("/").get(function (req, res) {
@@ -50,6 +71,12 @@ app.route("/").get(function (req, res) {
   }
   catch (error) {
       console.error(error);
+  }
+  try{
+      await usersDB.start();
+  }
+  catch(error){
+      console.log(error);
   }
 })()
 
