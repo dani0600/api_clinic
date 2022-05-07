@@ -215,6 +215,8 @@ async function getAll() {
           foreignField: "_id",
           as: "livingplaces"
         },
+    },
+    {
         $lookup: {
           from: "tumors",
           localField: "tumors",
