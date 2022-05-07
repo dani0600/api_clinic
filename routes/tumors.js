@@ -1,9 +1,10 @@
 const express = require("express");
 const tumorModel = require('./../models/tumor');
+const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
 
 const router = express.Router()
 
-router.get('/', async function(req, res, next) {
+router.get('/', endpointProtection, async function(req, res, next) {
   try {
       const tumors = await tumorModel.getAll(req.query);
       res.status(200).send(tumors);

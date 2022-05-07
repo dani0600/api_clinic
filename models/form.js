@@ -69,7 +69,7 @@ function checkProperties(person){
         message: 'Route: The field country is required and must be a non-empty string'
     }
   }
-  if (!person.livingPlaces || !Array.isArray(person.livingPlaces) || person.livingPlaces.length === 0) {
+  if (!person.livingplaces || !Array.isArray(person.livingplaces) || person.livingplaces.length === 0) {
       throw { 
           code: 400,
           message: 'Route: The field Living Places is required and must be an array of at least an element'
@@ -180,7 +180,7 @@ function buildMetastasis(info, id, tumorId){
 function buildLivingPlaces(info, id){
     let placesIds = [];
     let placesObj = [];
-    for(let place of info.livingPlaces){
+    for(let place of info.livingplaces){
         if(place.country=="Spain" && postalCode){
             let idPostalCode = postalCodeModel.getIdByPostalCode(postalCode)._id;
             let livingPlace = {

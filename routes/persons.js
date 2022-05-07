@@ -1,9 +1,10 @@
 const express = require("express");
 const personModel = require('./../models/person');
+const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
 
 const router = express.Router()
 
-router.get('/', async function(req, res, next) {
+router.get('/', endpointProtection, async function(req, res, next) {
   try {
       const persons = await personModel.getAll(req.query);
       res.status(200).send(persons);
@@ -13,7 +14,7 @@ router.get('/', async function(req, res, next) {
   }
 })
 
-router.post('/', async function(req, res, next) {
+router.post('/', endpointProtection, async function(req, res, next) {
   try {
       const persons = await personModel.add(req.body);
       res.status(200).send(persons);
@@ -23,7 +24,7 @@ router.post('/', async function(req, res, next) {
   }
 })
 
-router.post('/upload', async function(req, res, next) {
+router.post('/upload', endpointProtection, async function(req, res, next) {
   try {
       const persons = await personModel.addDocument(req.body);
       res.status(200).send(persons);
