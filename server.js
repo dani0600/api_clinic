@@ -41,7 +41,10 @@ app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
 
 app.use(cors({
-   origin: "https://git.heroku.com/apiclinic" ,
+   origin: [
+      "https://git.heroku.com/apiclinic",
+      "https://lungtrackerweb.web.app"
+   ],
    optionsSuccessStatus: 200 // some legacy browsers didn't work with 204
   }
 ));
