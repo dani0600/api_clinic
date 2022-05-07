@@ -8,13 +8,14 @@ async function getAll() {
   const collection = db.getCollection(livingPlacesCollectionName);
   const aggCursor = await collection.aggregate([
   {
-        $project: {
-            _id: 1,
-            postalCode: 1,
-            yearOfStart: 1,
-            yearOfEnd: 1,
-            isPresent: 1,            
-          }
+      $project: {
+          _id: 1,
+          city: 1,
+          postalCode: 1,
+          yearOfStart: 1,
+          yearOfEnd: 1,
+          isPresent: 1,            
+      }
   }
   
   ]);
@@ -41,8 +42,32 @@ async function add(place){
     }
 }
 
+async function getNumberPeopleByCity(){
+  const collection = db.getCollection(livingPlacesCollectionName);
+  const aggCursor = await collection.aggregate([
+    {
+      $unwind: '$city'
+    },
+    { 
+      $match : { 
+          isPresent : true 
+      }
+    },
+    {
+      $group: {
+          _id: '$city', 
+          sum: {
+              $sum: 1
+          }
+      }
+    }
+  ]);
+  return await aggCursor.toArray();
+}
+
 
 module.exports = {
     getAll,
+    getNumberPeopleByCity,
     add
   }

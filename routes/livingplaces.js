@@ -5,14 +5,33 @@ const {endpointProtection} = require('../middlewares/endpoint.protection.middlew
 const router = express.Router();
 
 router.get('/', endpointProtection, async function(req, res, next) {
-    try {
-        const livingPlaces = await livingPlacesModel.getAll(req.query);
-        res.status(200).send(livingPlaces);
+    
+    // Access the count parameter
+    let type = req.query.count;
+    if(type){
+        if(type === 'true'){
+            try{
+                const countCitizens = await livingPlacesModel.getNumberPeopleByCity();
+                res.status(200).send(countCitizens);
+            }
+            catch(error){
+                next(error);
+            }
+        }
+        else return [];
     }
-    catch(error){
-        next(error);
+    else{
+        try {
+            const livingPlaces = await livingPlacesModel.getAll();
+            res.status(200).send(livingPlaces);
+        }
+        catch(error){
+            next(error);
+        }
     }
-  })
+})
+
+
 
   
 module.exports = router;
