@@ -55,7 +55,7 @@ async function getNumberPeopleByCity(){
     },
     {
       $group: {
-          city: '$city', 
+          _id: '$city', 
           sum: {
               $sum: 1
           }
