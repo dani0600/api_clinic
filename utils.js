@@ -4,6 +4,8 @@ const metastasisCollectionName = 'metastasis';
 const surgeriesCollectionName = 'surgeries';
 const livingPlacesCollectionName ='livingplaces';
 const relativesCollectionName = 'relatives'
+const worklifesCollectionName = 'worklifes'
+const expositionsCollectionName = 'expositions';
 const postalCodeCollectionName = 'postalCodes'
 
 
@@ -20,5 +22,7 @@ module.exports = {
     surgeriesCollectionName,
     livingPlacesCollectionName,
     relativesCollectionName,
-    postalCodeCollectionName
+    postalCodeCollectionName,
+    worklifesCollectionName,
+    expositionsCollectionName
 }

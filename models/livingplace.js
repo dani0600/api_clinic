@@ -10,6 +10,7 @@ async function getAll() {
   {
       $project: {
           _id: 1,
+          country: 1,
           city: 1,
           postalCode: 1,
           yearOfStart: 1,

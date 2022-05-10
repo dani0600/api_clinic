@@ -5,89 +5,77 @@ const tumorModel = require('./../models/tumor');
 const relativeModel = require('./../models/relative');
 const placeModel = require('./../models/livingplace');
 const personModel = require('./../models/person');
-const postalCodeModel = require('./../models/postalCode');
-var mongoose = require('mongoose');
-
-
-const personSchema = new mongoose.Schema({
-    birthdate: {
-      type: Date,
-      required: [true, 'Birthdate is needed']
-    },
-    age: {
-      type: Number,
-      required: [true, 'Age is needed']
-    },
-    sex: {
-      type: String,
-      enum: ['Male', 'Female', "No-binary"],
-      required: true,
-    },
-    postalcode: {
-        type: Number,
-        required: true
-    },
-    country: {
-        type: String
-    },
-    livingPlaces: {
-        type: Array
-    },
-    tumors: {
-        type: Array
-    }
-});
+const metastasisModel = require('./../models/metastasis');
+const expositionModel = require('./../models/exposition');
+const worklifeModel = require('./../models/worklife');
 
 function checkProperties(person){
-  if (!checkString(person.birthdate)) {
-      throw { 
-          code: 400,
-          message: 'Route: The field birthdate is required and must be a string'
-      }
-  }
-  if (typeof person.age !== 'number') {
-      throw { 
-          code: 400,
-          message: 'Route: The field age is required and must be a number'
-      }
-  }
-  if (!checkString(person.sex)) {
-      throw { 
-          code: 400,
-          message: 'Route: The field sex is required and must be a non-empty string'
-      }
-  }
-  if (!checkString(person.postalcode)) {
-      throw { 
-          code: 400,
-          message: 'Route: The field Postal Code is required and must be a non-empty string'
-      }
-  }
-  if (!checkString(person.country)) {
-    throw { 
-        code: 400,
-        message: 'Route: The field country is required and must be a non-empty string'
+    if(!person.demographicDetails){
+        throw { 
+            code: 400,
+            message: 'Route: The field Demographic Details is required'
+        }
     }
-  }
-  if (!person.livingplaces || !Array.isArray(person.livingplaces) || person.livingplaces.length === 0) {
-      throw { 
-          code: 400,
-          message: 'Route: The field Living Places is required and must be an array of at least an element'
-      }
-  }
-  if (!person.tumors || !Array.isArray(person.tumors) || person.tumors.length === 0) {
-    throw { 
-        code: 400,
-        message: 'Route: The field tumors is required and must be an array of at least an element'
+    else{
+        if (!checkString(person.demographicDetails.birthdate)) {
+            throw { 
+                code: 400,
+                message: 'Route: The field birthdate is required and must be a string'
+            }
+        }
+        if (!checkString(person.demographicDetails.sex)) {
+            throw { 
+                code: 400,
+                message: 'Route: The field sex is required and must be a non-empty string'
+            }
+        }
+        if (!person.demographicDetails.livingPlace) {
+            throw { 
+                code: 400,
+                message: 'Route: The field Living Place is required'
+            }
+        }
+        if (!person.demographicDetails.bornPlace) {
+            throw { 
+                code: 400,
+                message: 'Route: The field Born Place is required'
+            }
+        }
     }
-  }
-  if (!person.worklife || !Array.isArray(person.worklife) || person.worklife.length === 0) {
-    throw { 
-        code: 400,
-        message: 'Route: The field tumors is required and must be an array of at least an element'
+
+    if(!person.clinicDetails){
+        throw { 
+            code: 400,
+            message: 'Route: The field Clinic Details is required'
+        }
     }
-  }
-  checkToxics(person.toxics);
+    else{
+        if(!person.clinicDetails.mainDiagnose){
+            throw { 
+                code: 400,
+                message: 'Route: The field Main Diagnose is required'
+            }
+        }
+        if (!person.clinicDetails.otherDiagnose || !Array.isArray(person.clinicDetails.otherDiagnose)) {
+            throw { 
+                code: 400,
+                message: 'Route: The field Other Diagnose is required and must be an array'
+            }
+        }
+    }
+    if (!person.jobDetails || !Array.isArray(person.jobDetails) || person.jobDetails.length === 0) {
+        throw { 
+            code: 400,
+            message: 'Route: The field Job Details is required and must be an array of at least an element'
+        }
+    }
+    if (!person.familyDetails || !Array.isArray(person.familyDetails)) {
+        throw { 
+            code: 400,
+            message: 'Route: The field Family Details is required and must be an array'
+        }
+    }
+    checkToxics(person.expositionDetails);
 }
 
 function checkToxics(toxics){
@@ -118,7 +106,7 @@ function checkToxics(toxics){
   if (!toxics.otherProducts || !Array.isArray(toxics.otherProducts)) {
     throw { 
         code: 400,
-        message: 'Route: The field Living Places is required and must be an array of at least an element'
+        message: 'Route: The field Living Places is required and must be an array'
     }
   }
   if (typeof toxics.nearbyRoad !== 'boolean') {
@@ -127,117 +115,132 @@ function checkToxics(toxics){
         message: 'Route: The field Nearby Road is required and must be a boolean'
     }
   }
+  if (!toxics.expositions || !Array.isArray(toxics.expositions)) {
+    throw { 
+        code: 400,
+        message: 'Route: The field Expositions is required and must be an array'
+    }
+  }
 }
 
 function buildTumors(info, id){
     let tumorsIds = [];
     let tumorsObj = [];
-    let metastasisIds = [];
-    let metastasisObj = [];
-    if (info.tumors){
-        for(let tumor of info.tumors){
-            let tumorId = ObjectId();
-            let metastasis = buildMetastasis(tumor.metastasis, id, tumorId);
-            metastasisIds = metastasis.metastasisIds;
-            metastasisObj = metastasis.metastasisObj;
-            let tum = {
-                _id: tumorId,
-                person: id,
-                main: tumor.main,
-                diagnoseYear: tumor.diagnoseYear,
-                type: tumor.type,
-                surgery: tumor.surgery,
-                mutations: tumor.mutations,
-                metastasis: metastasisIds
-            }
-            tumorsIds.push(tum._id);
-            tumorsObj.push(tum);
-        }
+    let diagnosesIds = [];
+    let diagnosesObj = [];
+    let tumor = info.clinicDetails.mainDiagnose;
+    let tumorId = ObjectId();
+    let diagnoses = buildOtherDiagnoses(info.clinicDetails.otherDiagnose, id);
+    diagnosesIds = diagnoses.diagnosesIds;
+    diagnosesObj = diagnoses.diagnosesObj;
+    let tum = {
+        _id: tumorId,
+        person: id,
+        main: true,
+        diagnoseYear: tumor.diagnoseYear,
+        type: tumor.cancerType,
+        mutation: tumor.mutation,
+        mutationType: tumor.mutationType,
+        operatedCancer: tumor.operatedCancer,
+        operationYear: tumor.operationYear,
+        extraTreatment: tumor.extraTreatment,
+        metastasis: tumor.metastasis,
+        metastasisYear: tumor.metastasisYear,
+        notListedMetastasisTreatment: tumor.notListedTreatment,
+        metastasisTreatment: tumor.metastasisTreatment,
+        notListedNoSurgeryTreatment: tumor.notListedNoSurgeryTreatment,
+        noSurgeryTreatment: tumor.noSurgeryTreatment,
+        previousDiseases: tumor.previousDiseases
     }
-    return {tumorsIds, tumorsObj, metastasisObj};
+    tumorsIds.push(tum._id);
+    tumorsObj.push(tum);
+    return {tumorsIds, tumorsObj, diagnosesObj, diagnosesIds};
 }
 
-function buildMetastasis(info, id, tumorId){
-    let metastasisIds = [];
-    let metastasisObj = [];
-    for(let tumor of info){
-        let metastasis = {
-            _id: ObjectId(),
-            tumor: tumorId,
+function buildOtherDiagnoses(info, id){
+    let diagnosesIds = [];
+    let diagnosesObj = [];
+    for (let diagnose of info){
+        let cancerId = ObjectId(); 
+        let cancer = {
+            _id: cancerId,
             person: id,
-            main: false,
-            diagnoseYear: tumor.diagnoseYear,
-            type: tumor.type,
-            surgery: tumor.surgery,
-            mutations: tumor.mutations,
+            main: diagnose.main ? diagnose.main : false,
+            type: diagnose.cancerType,
+            diagnoseYear: diagnose.diagnoseYear,
+            metastasis: diagnose.metastasis,
+            metastasisYear: diagnose.metastasisYear,
+            extraTreatment: diagnose.extraTreatment
         }
-        metastasisIds.push(metastasis._id);
-        metastasisObj.push(metastasis);
+        diagnosesIds.push(cancer._id);
+        diagnosesObj.push(cancer);
     }
-    return {metastasisIds, metastasisObj};
+    return {diagnosesIds, diagnosesObj};
 }
 
 function buildLivingPlaces(info, id){
     let placesIds = [];
     let placesObj = [];
-    for(let place of info.livingplaces){
-        if(place.country=="Spain" && postalCode){
-            let idPostalCode = postalCodeModel.getIdByPostalCode(postalCode)._id;
-            let livingPlace = {
-                _id: ObjectId(),
-                person: id,
-                country: place.country,
-                city: undefined,
-                postalCode: undefined,
-                idPostalCode: idPostalCode,
-                yearOfStart: place.yearOfStart,
-                yearOfEnd: place.yearOfEnd,
-                isPresent: place.isPresent  
-            }
-        }else{
-            let livingPlace = {
-                _id: ObjectId(),
-                person: id,
-                country: place.country,
-                city: place.city,
-                postalCode: place.postalCode,
-                idPostalCode: undefined,
-                yearOfStart: place.yearOfStart,
-                yearOfEnd: place.yearOfEnd,
-                isPresent: place.isPresent  
-            }
-        }
-        placesIds.push(livingPlace._id);
-        placesObj.push(livingPlace);
+    let place = info.livingPlace;
+    
+    let livingPlace = {
+        _id: ObjectId(),
+        person: id,
+        country: place.country.name,
+        city: place.city,
+        state: place.state,
+        postalCode: place.postalCode,
+        yearOfStart: place.initialYear,
+        yearOfEnd: place.endYear,
+        isPresent: true
     }
-    return {placesIds, placesObj};
+    placesIds.push(livingPlace._id);
+    placesObj.push(livingPlace);
+
+    let born = info.bornPlace;
+
+    let bornPlace = {
+        _id: ObjectId(),
+        person: id,
+        country: born.country.name,
+        city: born.city,
+        state: born.state,
+        postalCode: born.postalCode,
+        yearOfStart: born.initialYear,
+        yearOfEnd: born.endYear,
+        isPresent: born.endYear === 0 ? true : false 
+    }
+    placesIds.push(bornPlace._id);
+    placesObj.push(bornPlace);
+    return {placesIds, placesObj}; 
 }
 
 function buildRelatives(info, id){
     let relativesIds = [];
     let relativesObj = [];
     let relativesTumObj = [];
-    let tumors;
-    for(let relative of info.relatives){
+    let diagnoses;
+    for(let relative of info.familyDetails){
         let relId = ObjectId();
-        tumors = buildTumors(relative, relId);
+        relative.diagnose.main = true;
+        let diagnoseArray = [];
+        diagnoseArray.push(relative.diagnose);
+        diagnoses = buildOtherDiagnoses(diagnoseArray, relId);
         let rel = {
             _id: relId,
             person: id,
             relation: relative.relation,
             age: relative.age,
-            survived: relative.survived,
             ageOfDeath: relative.ageOfDeath,
-            tumors: tumors.tumorsIds   
+            survived: relative.survived,
+            isDeathRelatedToCancer: relative.cancerCause,
+            diagnose: diagnoses.diagnosesIds   
         }
         relativesIds.push(rel._id);
         relativesObj.push(rel);
     }
-    for(let tumor of tumors.tumorsObj){
-        relativesTumObj.push(tumor);
-    }
-    for(let metastasis of tumors.metastasisObj){
-        relativesTumObj.push(metastasis);
+    for(let diagnose of diagnoses.diagnosesObj){
+        relativesTumObj.push(diagnose);
     }
     return {relativesIds, relativesObj, relativesTumObj};
 }
@@ -245,15 +248,15 @@ function buildRelatives(info, id){
 function buildWorklife(info, id){
     let worklifeIds = [];
     let worklifeObj = [];
-    for(let worklife of info.worklife){
+    for(let worklife of info.jobDetails){
         let work = {
             _id: ObjectId(),
             person: id,
-            city: worklife.city,
             job: worklife.job,
-            yearOfStart: worklife.yearOfStart,
-            yearOfEnd: worklife.yearOfEnd,
-            isProtected: worklife.isProtected 
+            initialYear: worklife.initialYear,
+            endYear: worklife.endYear,
+            isProtected: worklife.isProtected,
+            currentJob: worklife.currentJob 
         }
         worklifeIds.push(work._id);
         worklifeObj.push(work);
@@ -261,25 +264,47 @@ function buildWorklife(info, id){
     return {worklifeIds, worklifeObj};
 }
 
+function buildExposition(info, id){
+    let expositionIds = [];
+    let expositionObj = [];
+    let exposition = info.expositionDetails;
+    let expo = {
+        _id: ObjectId(),
+        person: id,
+        smoker: exposition.smoker,
+        startAge: exposition.startAge ? exposition.startAge : null,
+        endAge:  exposition.endAge ? exposition.endAge : null,
+        avgCigarrettes: exposition.smoker ? exposition.avgCigarrettes : null,
+        otherProducts: exposition.otherProducts,
+        nearbyRoad: exposition.nearbyRoad,
+        expositions: exposition.expositions
+    }
+    expositionIds.push(expo._id);
+    expositionObj.push(expo);
+    return {expositionIds, expositionObj};
+}
+
 async function add(info) {
-    console.log(info);
-    try{  
-        checkProperties(info);
-    }catch (error) {
-        throw(error.message);
-    } 
+    console.log(info)
+    console.log("ESTAMOS EN EL ADD DEL FORM")
     let id = ObjectId();
     info._id = id;
-    let tumIds, tumObj, metObj;
+    let tumIds, tumObj, othDiagObj, othDiagIds;
     let tumors = buildTumors(info, id);
     tumIds = tumors.tumorsIds;
     tumObj = tumors.tumorsObj;
-    metObj = tumors.metastasisObj;
+    othDiagObj = tumors.diagnosesObj;
+    othDiagIds = tumors.diagnosesIds;
 
     let workIds, workObj;
     let worklife = buildWorklife(info, id);
     workIds = worklife.worklifeIds;
     workObj = worklife.worklifeObj;
+
+    let expoIds, expoObj;
+    let expositions = buildExposition(info, id);
+    expoIds = expositions.expositionIds;
+    expoObj = expositions.expositionObj;
 
     let relIds, relObj; 
     relative = buildRelatives(info, id);
@@ -288,11 +313,13 @@ async function add(info) {
     relTumObj = relative.relativesTumObj;
 
     let placeIds, placeObj;
-    places = buildLivingPlaces(info, id);
+    places = buildLivingPlaces(info.demographicDetails, id);
     placeIds = places.placesIds;
     placeObj = places.placesObj;
 
+    console.log("he llegado aqui")
     for(let relative of relObj){
+        console.log(relative)
         try{
             await addRelative(relative);
         }
@@ -319,9 +346,9 @@ async function add(info) {
             throw error;
         }
     }
-    for (let metastasis of metObj){
+    for (let diagnose of othDiagObj){
         try{
-            await addTumor(metastasis);
+            await addOtherDiagnoses(diagnose);
         }
         catch(error){
             console.log(error);
@@ -330,7 +357,25 @@ async function add(info) {
     }
     for (let relTumor of relTumObj){
         try{
-            await addTumor(relTumor);
+            await addOtherDiagnoses(relTumor);
+        }
+        catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+    for (let work of workObj){
+        try{
+            await addWorklife(work);
+        }
+        catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+    for (let exposition of expoObj){
+        try{
+            await addExposition(exposition);
         }
         catch(error){
             console.log(error);
@@ -338,7 +383,7 @@ async function add(info) {
         }
     }
     try {
-        await addPerson(info, tumIds, relIds, placeIds, workObj);
+        await addPerson(info, tumIds, othDiagIds, relIds, placeIds, workIds, expoIds);
     } catch (error) {
         console.log(error)
         throw error;
@@ -348,6 +393,24 @@ async function add(info) {
 async function addTumor(tumor){
     try{
         await tumorModel.add(tumor)
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+async function addOtherDiagnoses(diagnose){
+    try{
+        await metastasisModel.add(diagnose)
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+async function addWorklife(work){
+    try{
+        await worklifeModel.add(work)
     }
     catch(error){
         throw error;
@@ -372,9 +435,18 @@ async function addRelative(relative){
     }
 }
 
-async function addPerson(person, tumIds, relIds, placeIds, workObj){
+async function addExposition(exposition){
     try{
-        await personModel.add(person, tumIds, relIds, placeIds, workObj)
+        await expositionModel.add(exposition)
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+async function addPerson(person, tumIds, othDiagIds, relIds, placeIds, workIds, expoIds){
+    try{
+        await personModel.add(person, tumIds, othDiagIds, relIds, placeIds, workIds, expoIds)
     }
     catch(error){
         throw error;
@@ -388,12 +460,16 @@ module.exports = {
   addTumor,
   addLivingPlace,
   addRelative,
+  addWorklife,
   addPerson,
+  addExposition,
+  addOtherDiagnoses,
   buildLivingPlaces,
-  buildMetastasis,
+  buildOtherDiagnoses,
   buildRelatives,
   buildTumors,
-  buildWorklife
+  buildWorklife,
+  buildExposition
 }
 
 

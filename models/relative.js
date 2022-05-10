@@ -81,9 +81,10 @@ async function add(relative) {
             person: relative.person,
             relation: relative.relation,
             age: relative.age,
-            survived: relative.survived,
             ageOfDeath: relative.ageOfDeath,
-            tumors: relative.tumors  
+            survived: relative.survived,
+            isDeathRelatedToCancer: relative.isDeathRelatedToCancer, 
+            tumors: relative.diagnose
         })
     }
     catch(error){
