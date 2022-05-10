@@ -102,9 +102,18 @@ async function add(tumor) {
             main: tumor.main,
             diagnoseYear: tumor.diagnoseYear,
             type: tumor.type,
-            surgery: tumor.surgery,
-            mutations: tumor.mutations,
-            metastasis: tumor.metastasis
+            mutation: tumor.mutation,
+            mutationType: tumor.mutationType,
+            operatedCancer: tumor.operatedCancer,
+            operationYear: tumor.operationYear,
+            extraTreatment: tumor.extraTreatment,
+            metastasis: tumor.metastasis,
+            metastasisYear: tumor.metastasisYear,
+            notListedMetastasisTreatment: tumor.notListedMetastasisTreatment,
+            metastasisTreatment: tumor.metastasisTreatment,
+            notListedNoSurgeryTreatment: tumor.notListedNoSurgeryTreatment,
+            noSurgeryTreatment: tumor.noSurgeryTreatment,
+            previousDiseases: tumor.previousDiseases
         })
     }
     catch(error){
