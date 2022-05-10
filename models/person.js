@@ -5,143 +5,6 @@ const { personsCollectionName } = require('./../utils');
 var ageCalculator = require('age-calculator');
 let {AgeFromDateString, AgeFromDate} = require('age-calculator');
 
-
-// function checkProperties(person){
-//   if (typeof person.birthdate !== 'date') {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field birthdate is required and must be a date'
-//       }
-//   }
-//   if (typeof person.age !== 'number') {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field age is required and must be a number'
-//       }
-//   }
-//   if (!checkString(person.sex)) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field sex is required and must be a non-empty string'
-//       }
-//   }
-//   if (!checkString(person.postalcode)) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field Postal Code is required and must be a non-empty string'
-//       }
-//   }
-//   if (!checkString(person.country)) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field country is required and must be a non-empty string'
-//     }
-//   }
-//   if (!person.livingPlaces || !Array.isArray(person.livingPlaces) || person.livingPlaces.length === 0) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field Living Places is required and must be an array of at least an element'
-//       }
-//   }
-//   if (!person.tumors || !Array.isArray(person.tumors) || person.tumors.length === 0) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field tumors is required and must be an array of at least an element'
-//     }
-//   }
-// }
-
-// function checkDocumentProperties(person){
-//   if (!checkString(person.birthdate)) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field birthdate is required and must be a string'
-//       }
-//   }
-//   if (typeof person.age !== 'number') {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field age is required and must be a number'
-//       }
-//   }
-//   if (!checkString(person.sex)) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field sex is required and must be a non-empty string'
-//       }
-//   }
-//   if (!checkString(person.postalcode)) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field Postal Code is required and must be a non-empty string'
-//       }
-//   }
-//   if (!checkString(person.country)) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field country is required and must be a non-empty string'
-//     }
-//   }
-//   if (!person.livingPlaces || !Array.isArray(person.livingPlaces) || person.livingPlaces.length === 0) {
-//       throw { 
-//           code: 400,
-//           message: 'Route: The field Living Places is required and must be an array of at least an element'
-//       }
-//   }
-//   if (!person.tumors || !Array.isArray(person.tumors) || person.tumors.length === 0) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field tumors is required and must be an array of at least an element'
-//     }
-//   }
-//   if (!person.worklife || !Array.isArray(person.worklife) || person.worklife.length === 0) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field tumors is required and must be an array of at least an element'
-//     }
-//   }
-//   checkToxics(person.toxics);
-// }
-
-// function checkToxics(toxics){
-//   if (typeof toxics.smoker !== 'boolean') {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field smoker is required and must be a boolean'
-//     }
-//   }
-//   if(toxics.smoker && typeof toxics.startAge !== 'number'){
-//     throw { 
-//       code: 400,
-//       message: 'Route: The field Start Age is required and must be a number'
-//     }
-//   }
-//   if(toxics.smoker && typeof toxics.endAge !== 'number'){
-//     throw { 
-//       code: 400,
-//       message: 'Route: The field End Age is required and must be a number'
-//     }
-//   }
-//   if(toxics.smoker && typeof toxics.avgCigarrettes !== 'number'){
-//     throw { 
-//       code: 400,
-//       message: 'Route: The field Average Cigarrettes is required and must be a number'
-//     }
-//   }
-//   if (!toxics.otherProducts || !Array.isArray(toxics.otherProducts)) {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field Living Places is required and must be an array of at least an element'
-//     }
-//   }
-//   if (typeof toxics.nearbyRoad !== 'boolean') {
-//     throw { 
-//         code: 400,
-//         message: 'Route: The field Nearby Road is required and must be a boolean'
-//     }
-//   }
-// }
-
 async function getAll() {
   const collection = db.getCollection(personsCollectionName);
   const aggCursor = await collection.aggregate([
@@ -261,49 +124,64 @@ async function add(info, tumIds, othDiagIds, relIds, placeIds, workIds, expoIds)
   }
 }
 
-// async function addDocument(info) {
-// 	console.log(info);
-//   try{  
-//     checkDocumentProperties(info);
-//   }catch (error) {
-//      throw(error.message);
-//   } 
-//   const collection = db.getCollection(personsCollectionName);
-//   try {
-//     await collection.insertOne({
-//       _id: ObjectId(), 
-//       birthdate: info.birthdate,
-//       age: info.age,
-//       sex: info.sex,
-//       postalcode: info.postalcode,
-//       country: info.country,
-//       livingplaces: info.livingplaces,
-//       tumors: info.tumors,
-//       lungDiseases: info.lungDiseases,
-//       toxics: {
-//         smoker: info.toxics.smoker,
-//         startAge: info.toxics.smoker ? info.toxics.startAge : null,
-//         endAge:  info.toxics.smoker ? info.toxics.endAge : null,
-//         avgCigarrettes: info.toxics.smoker ? info.toxics.avgCigarrettes : null,
-//         otherProducts: info.toxics.otherProducts,
-//         nearbyRoad: info.toxics.nearbyRoad
-//       },
-//       worklife: info.worklife,
-//       carcinomas: info.carcinomas,
-//       relatives: info.relatives,
-//     });
-//   } catch (error) {
-//       console.log(error)
-//       throw error;
-//   }
-// }
+async function getAgeRanges(){
+  const collection = db.getCollection(personsCollectionName);
+  const aggCursor = await collection.aggregate([
+    {
+      '$project': {
+        'age': {
+          '$subtract': [
+            '$age', {
+              '$mod': [
+                '$age', 1
+              ]
+            }
+          ]
+        }, 
+        'sex': 1
+      }
+    }, {
+      '$project': {    
+        "range": {
+           $concat: [
+              { $cond: [{$lte: ["$age",0]}, "Unknown", ""]}, 
+              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "male"]}]}, "1b", ""] },
+              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "female"]}]}, "1a", ""] },
+              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "female"]}]}, "2a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "male"]}]}, "2b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "female"]}]}, "3a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "male"]}]}, "3b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "female"]}]}, "4a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "male"]}]}, "4b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "male"]}]}, "5a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "female"]}]}, "5b", ""]}
+           ]
+        }  
+      }
+    }, {
+      '$group': {
+        '_id': {
+          'grupo': '$range'
+        }, 
+        'Total': {
+          '$sum': 1
+        }
+      }
+    }, {
+      '$sort': { 
+        "_id.grupo" : 1 
+      }
+    }
+  ]);
+  return await aggCursor.toArray();
+}
+
 
 
 module.exports = {
-  //checkProperties,
   getAll,
   add,
-  //addDocument
+  getAgeRanges
 }
 
 

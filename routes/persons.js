@@ -14,6 +14,17 @@ router.get('/', endpointProtection, async function(req, res, next) {
   }
 })
 
+router.get('/ageRanges', endpointProtection, async function(req, res, next) {
+  try {
+      const ranges = await personModel.getAgeRanges();
+      res.status(200).send(ranges);
+  }
+  catch(error){
+      next(error);
+  }
+})
+
+
 router.post('/', endpointProtection, async function(req, res, next) {
   try {
       const persons = await personModel.add(req.body);
