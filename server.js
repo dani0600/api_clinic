@@ -98,11 +98,4 @@ https
     }
 );
 
-http
-    .createServer(app)
-    .listen(process.env.HTTP_PORT, ()=>{
-            console.log('Server is running at port ' + process.env.HTTP_PORT);
-    }
-);
-
 app.get('/', (req, res) => res.sendStatus(200));
