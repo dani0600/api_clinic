@@ -183,16 +183,16 @@ async function getAgeRanges(){
         "range": {
            $concat: [
               { $cond: [{$lte: ["$age",0]}, "Unknown", ""]}, 
-              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "male"]}]}, "1b", ""] },
-              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "female"]}]}, "1a", ""] },
-              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "female"]}]}, "2a", ""]},
-              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "male"]}]}, "2b", ""]},
-              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "female"]}]}, "3a", ""]},
-              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "male"]}]}, "3b", ""]},
-              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "female"]}]}, "4a", ""]},
-              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "male"]}]}, "4b", ""]},
-              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "male"]}]}, "5a", ""]},
-              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "female"]}]}, "5b", ""]}
+              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "Hombre"]}]}, "1b", ""] },
+              { $cond: [{$and:[ {$gt:["$age", 0 ]}, {$lt: ["$age", 18]}, {$eq: ["$sex", "Mujer"]}]}, "1a", ""] },
+              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "Mujer"]}]}, "2a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",18]}, {$lt:["$age", 31]}, {$eq: ["$sex", "Hombre"]}]}, "2b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "Mujer"]}]}, "3a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",31]}, {$lt:["$age", 51]}, {$eq: ["$sex", "Hombre"]}]}, "3b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "Mujer"]}]}, "4a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",51]}, {$lt:["$age", 71]}, {$eq: ["$sex", "Hombre"]}]}, "4b", ""]},
+              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "Hombre"]}]}, "5a", ""]},
+              { $cond: [{$and:[ {$gte:["$age",71]}, {$eq: ["$sex", "Mujer"]}]}, "5b", ""]}
            ]
         }  
       }
