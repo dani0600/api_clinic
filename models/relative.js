@@ -44,15 +44,16 @@ async function getAll() {
           _id: 1,
           relation: 1,
           age: 1,
-          alive: 1,
+          survived: 1,
           ageOfDeath: 1,
-          tumor: {
+          isDeathRelatedToCancer: 1,
+          tumors: {
             $map: {
-                input: "$tumor",
-                as: 'tumor',
+                input: "$tumors",
+                as: 'tumors',
                 in: {
                     $convert: {
-                        input: '$$tumor',
+                        input: '$$tumors',
                         to: 'objectId'
                     }
                 }
@@ -62,10 +63,10 @@ async function getAll() {
     },
     {
         $lookup: {
-          from: "tumors",
-          localField: "tumor",
+          from: "metastasis",
+          localField: "tumors",
           foreignField: "_id",
-          as: "tumor"
+          as: "tumors"
         }
     }
 

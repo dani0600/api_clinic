@@ -14,15 +14,37 @@ async function getAll() {
           birthdate: 1,
           age: 1,
           sex: 1,
-          jobDetails: 1,
-          expositionDetails: 1,
-          livingplaces: {
+          jobDetails: {
+            $map: {
+                input: "$jobDetails",
+                as: 'worklife',
+                in: {
+                    $convert: {
+                        input: '$$worklife',
+                        to: 'objectId'
+                    }
+                }
+            }
+          },
+          expositionDetails: {
+            $map: {
+                input: "$expositionDetails",
+                as: 'exposition',
+                in: {
+                    $convert: {
+                        input: '$$exposition',
+                        to: 'objectId'
+                    }
+                }
+            }
+          },
+          livingPlaces: {
               $map: {
-                  input: "$livingplaces",
-                  as: 'livingplaces',
+                  input: "$livingPlaces",
+                  as: 'livingPlaces',
                   in: {
                       $convert: {
-                          input: '$$livingplaces',
+                          input: '$$livingPlaces',
                           to: 'objectId'
                       }
                   }
@@ -30,7 +52,7 @@ async function getAll() {
           },
           mainDiagnose: {
               $map: {
-                  input: "$tumors",
+                  input: "$mainDiagnose",
                   as: 'tumors',
                   in: {
                       $convert: {
@@ -42,11 +64,11 @@ async function getAll() {
           },
           otherDiagnoses: {
               $map: {
-                  input: "$tumors",
-                  as: 'tumors',
+                  input: "$otherDiagnoses",
+                  as: 'metastasis',
                   in: {
                       $convert: {
-                          input: '$$tumors',
+                          input: '$$metastasis',
                           to: 'objectId'
                       }
                   }
@@ -54,7 +76,7 @@ async function getAll() {
           },
           familyDetails: {
               $map: {
-                  input: "$relatives",
+                  input: "$familyDetails",
                   as: 'relatives',
                   in: {
                       $convert: {
@@ -69,9 +91,9 @@ async function getAll() {
     {
         $lookup: {
           from: "livingplaces",
-          localField: "livingplaces",
+          localField: "livingPlaces",
           foreignField: "_id",
-          as: "livingplaces"
+          as: "livingPlaces"
         },
     },
     {
@@ -83,19 +105,35 @@ async function getAll() {
         }
     },
     {
-      $lookup: {
-        from: "diagnoses",
-        localField: "otherDiagnoses",
-        foreignField: "_id",
-        as: "otherDiagnoses"
-      }
-  },
+        $lookup: {
+            from: "metastasis",
+            localField: "otherDiagnoses",
+            foreignField: "_id",
+            as: "otherDiagnoses"
+        }
+    },
     {
         $lookup: {
           from: "relatives",
           localField: "familyDetails",
           foreignField: "_id",
           as: "familyDetails"
+        }
+    },
+    {
+        $lookup: {
+          from: "worklifes",
+          localField: "jobDetails",
+          foreignField: "_id",
+          as: "jobDetails"
+        }
+    },
+    {
+        $lookup: {
+          from: "expositions",
+          localField: "expositionDetails",
+          foreignField: "_id",
+          as: "expositionDetails"
         }
     }
   ]);
