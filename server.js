@@ -85,17 +85,26 @@ app.route("/").get(function (req, res) {
   catch(error){
       console.log(error);
   }
+  try{
+      app.listen(process.env.PORT, () => {
+          console.log("Server started at port " + process.env.PORT);
+      });
+  }
+  catch(error){
+      console.log(error);
+  }
 })()
 
 //app.listen(process.env.PORT || 4000);
 //https options
-const options = {};
+// const options = {};
 
-https
-    .createServer(options, app)
-    .listen(process.env.PORT, ()=>{
-            console.log('Server is running at port ' + process.env.PORT);
-    }
-);
+// https
+//     .createServer(options, app)
+//     .listen(process.env.PORT, ()=>{
+//             console.log('Server is running at port ' + process.env.PORT);
+//     }
+// );
+
 
 app.get('/', (req, res) => res.sendStatus(200));
