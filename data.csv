@@ -1,0 +1,9 @@
+_id,birthdate,age,sex,jobDetails,expositionDetails,livingPlaces,mainDiagnose,otherDiagnoses,familyDetails
+627aba9111f8d1eadc611ef1,1978-08-07,43,No Binario,"[object Object],[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],"[object Object],[object Object]","[object Object],[object Object]"
+627abadf11f8d1eadc611eff,1991-11-11,30,Hombre,"[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],,[object Object]
+627bdc272c7f2e18cfc4b62e,1991-11-11,30,Hombre,"[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],,[object Object]
+627bdc2c2c7f2e18cfc4b62f,1991-11-11,30,Hombre,"[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],,[object Object]
+627bdc302c7f2e18cfc4b630,1991-11-11,30,Mujer,"[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],,[object Object]
+627bde5c3f982abdaff2463f,1991-11-11,30,Hombre,"[object Object],[object Object]",[object Object],"[object Object],[object Object]",[object Object],,[object Object]
+627be067a1bb774dc3ffd370,1998-06-17,23,Mujer,,[object Object],"[object Object],[object Object]",[object Object],,
+627be0a7a1bb774dc3ffd375,1998-06-17,23,Mujer,,[object Object],"[object Object],[object Object]",[object Object],,

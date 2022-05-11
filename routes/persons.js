@@ -1,6 +1,7 @@
 const express = require("express");
 const personModel = require('./../models/person');
 const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+var csv = require('csv-express');
 
 const router = express.Router()
 
@@ -18,6 +19,19 @@ router.get('/ageRanges', endpointProtection, async function(req, res, next) {
   try {
       const ranges = await personModel.getAgeRanges();
       res.status(200).send(ranges);
+  }
+  catch(error){
+      next(error);
+  }
+})
+
+router.get('/exportToCSV', endpointProtection, async function(req, res, next) {
+  try {
+      var persons= await personModel.exportPersonsToExcel();
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/json');
+      res.setHeader("Content-Disposition", 'attachment; filename=data.json');
+      res.send(persons);
   }
   catch(error){
       next(error);
