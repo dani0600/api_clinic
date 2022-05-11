@@ -10,6 +10,7 @@ const expositionModel = require('./../models/exposition');
 const worklifeModel = require('./../models/worklife');
 
 function checkProperties(person){
+    console.log("entro checkPropierties")
     if(!person.demographicDetails){
         throw { 
             code: 400,
@@ -42,7 +43,7 @@ function checkProperties(person){
             }
         }
     }
-
+  
     if(!person.clinicDetails){
         throw { 
             code: 400,
@@ -63,7 +64,8 @@ function checkProperties(person){
             }
         }
     }
-    if (!person.jobDetails || !Array.isArray(person.jobDetails) || person.jobDetails.length === 0) {
+    console.log("entro checkProp3")
+    if (!person.jobDetails || !Array.isArray(person.jobDetails) ) {
         throw { 
             code: 400,
             message: 'Route: The field Job Details is required and must be an array of at least an element'
@@ -79,6 +81,7 @@ function checkProperties(person){
 }
 
 function checkToxics(toxics){
+    
   if (typeof toxics.smoker !== 'boolean') {
     throw { 
         code: 400,
@@ -239,8 +242,10 @@ function buildRelatives(info, id){
         relativesIds.push(rel._id);
         relativesObj.push(rel);
     }
-    for(let diagnose of diagnoses.diagnosesObj){
-        relativesTumObj.push(diagnose);
+    if(diagnoses){
+        for(let diagnose of diagnoses.diagnosesObj){
+            relativesTumObj.push(diagnose);
+        }
     }
     return {relativesIds, relativesObj, relativesTumObj};
 }
