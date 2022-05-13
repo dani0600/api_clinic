@@ -3,10 +3,11 @@ const tumorsCollectionName = 'tumors';
 const metastasisCollectionName = 'metastasis';
 const surgeriesCollectionName = 'surgeries';
 const livingPlacesCollectionName ='livingplaces';
-const relativesCollectionName = 'relatives'
-const worklifesCollectionName = 'worklifes'
+const relativesCollectionName = 'relatives';
+const worklifesCollectionName = 'worklifes';
 const expositionsCollectionName = 'expositions';
-const postalCodeCollectionName = 'postalCodes'
+const postalCodeCollectionName = 'postalCodes';
+const suggestionsCollectionName = 'suggestions';
 
 
 
@@ -24,5 +25,6 @@ module.exports = {
     relativesCollectionName,
     postalCodeCollectionName,
     worklifesCollectionName,
-    expositionsCollectionName
+    expositionsCollectionName,
+    suggestionsCollectionName
 }

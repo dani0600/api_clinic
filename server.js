@@ -17,6 +17,7 @@ const livingPlaces = require("./routes/livingplaces");
 const relatives = require("./routes/relatives");
 const worklifes = require("./routes/worklifes");
 const expositions = require("./routes/expositions");
+const suggestions = require("./routes/suggestions");
 const postalCodes = require("./routes/postalCodes");
 const forms = require("./routes/forms");
 const AuthorizationRouter = require('./routes/auth');
@@ -41,6 +42,7 @@ app.use('/worklifes', worklifes);
 app.use('/expositions', expositions);
 app.use('/livingplaces', livingPlaces);
 app.use('/relatives', relatives);
+app.use('/suggestions', suggestions);
 app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
 
