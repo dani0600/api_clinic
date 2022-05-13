@@ -5,11 +5,15 @@ const { suggestionsCollectionName } = require('./../utils');
 
 async function checkEmail(info){
     const collection = db.getCollection(suggestionsCollectionName);
-    var found = collection.findOne({email: info.email})
-    if(found){
+    const count = await collection.countDocuments({
+        email: { 
+            $eq: info.email 
+        }
+    });
+    if (count != 0) {
         throw { 
             code: 400,
-            message: 'Suggestions: This user has already sent a suggestion'
+            message: 'Suggestion: This user has already sent a suggestion'
         }
     }
 }
@@ -52,13 +56,20 @@ async function getAll() {
 }
 
 async function add(info) {
-    // checkProperties(info);
-    // try{
-    //     await checkEmail(info);
-    // }
-    // catch(error){
-    //     throw error;
-    // }
+    try{
+        checkProperties(info);
+    }
+    catch(error){
+        console.log(error);
+        throw error;
+    }
+    try{
+        await checkEmail(info);
+    }
+    catch(error){
+        console.log(error);
+        throw error;
+    }
     const collection = db.getCollection(suggestionsCollectionName);
     try{
         await collection.insertOne({
