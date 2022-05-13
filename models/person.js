@@ -6,8 +6,6 @@ var ageCalculator = require('age-calculator');
 let {AgeFromDateString, AgeFromDate} = require('age-calculator');
 
 
-
-
 async function getAll() {
   const collection = db.getCollection(personsCollectionName);
   const aggCursor = await collection.aggregate([
@@ -223,13 +221,26 @@ async function getAgeRanges(){
   return await aggCursor.toArray();
 }
 
+async function countTotalPersons() {
+  const collection = db.getCollection(personsCollectionName);
+  let sum = 0;
+  try{
+      sum = await collection.estimatedDocumentCount();
+  }
+  catch(error){
+      console.log(error);
+      throw error;
+  }
+  return sum;    
+}
 
 
 module.exports = {
   getAll,
   add,
   getAgeRanges,
-  exportPersonsToExcel
+  exportPersonsToExcel,
+  countTotalPersons
 }
 
 

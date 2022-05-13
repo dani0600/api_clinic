@@ -6,13 +6,26 @@ var csv = require('csv-express');
 const router = express.Router()
 
 router.get('/', endpointProtection, async function(req, res, next) {
-  try {
-      const persons = await personModel.getAll(req.query);
-      res.status(200).send(persons);
+  let option = req.query.option;
+  if(option === 'count'){
+      try{
+          const sum = await personModel.countTotalPersons();
+          res.json(sum);
+      }
+      catch(error){
+          next(error);
+      }
   }
-  catch(error){
-      next(error);
+  else{
+      try {
+          const persons = await personModel.getAll(req.query);
+          res.status(200).send(persons);
+      }
+      catch(error){
+          next(error);
+      }
   }
+  
 })
 
 router.get('/ageRanges', endpointProtection, async function(req, res, next) {
