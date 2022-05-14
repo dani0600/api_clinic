@@ -35,7 +35,7 @@ router.get('/marks', async function(req, res, next) {
     }
 })
 
-router.post('/', endpointProtection, async function(req, res, next) {
+router.post('/', async function(req, res, next) {
     try {
         const suggestions = await suggestionModel.add(req.body);
         res.status(200).send(suggestions);
