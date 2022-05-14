@@ -44,8 +44,35 @@ async function add(info){
   }
 }
 
+async function getClassifiedExpositions(){
+  const collection = db.getCollection(expositionsCollectionName);
+    const aggCursor = await collection.aggregate([
+        {
+          '$project': {
+            'expositions': 1
+          }
+        }, {
+          '$unwind': {
+            'path': '$expositions'
+          }
+        }, {
+          '$group': {
+            '_id': {
+              'expositions': '$expositions'
+            }, 
+            'Total': {
+              '$sum': 1
+            }
+          }
+        }
+      ]);
+      return await aggCursor.toArray();
+
+}
+
 
 module.exports = {
     getAll,
-    add
+    add,
+    getClassifiedExpositions
 }
