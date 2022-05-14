@@ -8,16 +8,7 @@ const router = express.Router()
 router.get('/', endpointProtection, async function(req, res, next) {
     
     let option = req.query.option;
-    if(option === 'mark'){
-        try {
-            const marks = await suggestionModel.getAvgMark();
-            res.status(200).send(marks);
-        }
-        catch(error){
-            next(error);
-        }
-    }
-    else if(option === 'count'){
+    if(option === 'count'){
         try{
             const sum = await suggestionModel.countTotalSuggestions();
             res.json(sum);
@@ -34,6 +25,16 @@ router.get('/', endpointProtection, async function(req, res, next) {
         catch(error){
             next(error);
         }
+    }
+})
+
+router.get('/marks', async function(req, res, next) {
+    try {
+        const marks = await suggestionModel.getAvgMark();
+        res.status(200).send(marks);
+    }
+    catch(error){
+        next(error);
     }
 })
 
