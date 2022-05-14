@@ -1,5 +1,6 @@
 const express = require("express");
 const personModel = require('./../models/person');
+const expositionModel = require('./../models/exposition');
 const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
 var csv = require('csv-express');
 
@@ -25,6 +26,7 @@ router.get('/count', async function(req, res, next) {
     }
 })
 
+
 router.get('/ageRanges', endpointProtection, async function(req, res, next) {
   try {
       const ranges = await personModel.getAgeRanges();
@@ -34,6 +36,8 @@ router.get('/ageRanges', endpointProtection, async function(req, res, next) {
       next(error);
   }
 })
+
+
 
 router.get('/exportToCSV', endpointProtection, async function(req, res, next) {
   try {

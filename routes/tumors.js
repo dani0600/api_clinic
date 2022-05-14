@@ -14,6 +14,16 @@ router.get('/', endpointProtection, async function(req, res, next) {
   }
 })
 
+router.get('/mutationTypes', endpointProtection, async function(req, res, next) {
+  try {
+      const mutations = await tumorModel.getMutationTypes();
+      res.status(200).send(mutations);
+  }
+  catch(error){
+      next(error);
+  }
+})
+
 
 
 module.exports = router;

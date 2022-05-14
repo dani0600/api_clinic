@@ -31,6 +31,30 @@ async function getAll() {
   return await aggCursor.toArray();
 }
 
+
+async function getMutationTypes() {
+  const collection = db.getCollection(tumorsCollectionName);
+  const aggCursor = await collection.aggregate([
+    {
+      '$project': {
+        'mutationType': 1
+      }
+    },
+    {
+      '$group': {
+        '_id': {
+          'mutation': '$mutationType'
+        }, 
+        'Total': {
+          '$sum': 1
+        }
+      }
+    }
+  ]);
+  return await aggCursor.toArray();
+   
+}
+
 async function add(tumor) {
   const collection = db.getCollection(tumorsCollectionName);
     try{
@@ -62,7 +86,8 @@ async function add(tumor) {
 
 module.exports = {
   getAll,
-  add
+  add,
+  getMutationTypes
 }
 
 
