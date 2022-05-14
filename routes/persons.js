@@ -38,6 +38,8 @@ router.get('/ageRanges', endpointProtection, async function(req, res, next) {
   }
 })
 
+
+
 router.get('/exportToCSV', endpointProtection, async function(req, res, next) {
   try {
       var persons= await personModel.exportPersonsToExcel();

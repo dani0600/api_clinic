@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const db = require('./../app');
 const { checkString } = require('./../utils');
 const { personsCollectionName } = require('./../utils');
+const { tumorsCollectionName } = require('./../utils');
 var ageCalculator = require('age-calculator');
 let {AgeFromDateString, AgeFromDate} = require('age-calculator');
 
@@ -221,6 +222,8 @@ async function getAgeRanges(){
   return await aggCursor.toArray();
 }
 
+
+
 async function countTotalPersons() {
   const collection = db.getCollection(personsCollectionName);
   let sum = 0;
@@ -240,7 +243,8 @@ module.exports = {
   add,
   getAgeRanges,
   exportPersonsToExcel,
-  countTotalPersons
+  countTotalPersons,
+  
 }
 
 
