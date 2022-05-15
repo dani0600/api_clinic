@@ -19,6 +19,7 @@ const worklifes = require("./routes/worklifes");
 const expositions = require("./routes/expositions");
 const suggestions = require("./routes/suggestions");
 const postalCodes = require("./routes/postalCodes");
+const contaminants = require("./routes/contaminants");
 const forms = require("./routes/forms");
 const AuthorizationRouter = require('./routes/auth');
 const UsersRouter = require('./routes/users');
@@ -44,6 +45,7 @@ app.use('/livingplaces', livingPlaces);
 app.use('/relatives', relatives);
 app.use('/suggestions', suggestions);
 app.use('/postalCodes', postalCodes);
+app.use('/contaminants', contaminants);
 app.use('/upload', forms);
 
 app.use(cors({
