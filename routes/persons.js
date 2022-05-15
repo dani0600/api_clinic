@@ -1,7 +1,7 @@
 const express = require("express");
 const personModel = require('./../models/person');
 const expositionModel = require('./../models/exposition');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+const {endpointProtection} = require('../services/middlewares/endpoint.protection.middleware');
 var csv = require('csv-express');
 
 const router = express.Router()
