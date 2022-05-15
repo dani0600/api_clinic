@@ -4,8 +4,6 @@ const {endpointProtection} = require('../middlewares/endpoint.protection.middlew
 
 const router = express.Router()
 
-
-
 router.get('/', endpointProtection, async function(req, res, next) {
   try {
       const expositions = await expositionModel.getAll(req.query);

@@ -10,6 +10,7 @@ const db = require("./app");
 
 // Routes
 const persons = require("./routes/persons");
+const expositions = require("./routes/expositions");
 const tumors = require("./routes/tumors");
 const surgeries = require("./routes/surgeries");
 const metastasis = require("./routes/metastasis");
@@ -67,6 +68,7 @@ app.use('/relatives', relatives);
 app.use('/suggestions', suggestions);
 app.use('/postalCodes', postalCodes);
 app.use('/upload', forms);
+app.use('/expositions', expositions);
 
 //JWT protection
 //app.use(endpointProtection);
