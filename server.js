@@ -24,7 +24,7 @@ const AuthorizationRouter = require('./routes/auth');
 const UsersRouter = require('./routes/users');
 
 //Middleware, JWT Protection
-const { endpointProtection } = require('./middlewares/endpoint.protection.middleware');
+const { endpointProtection } = require('./services/middlewares/endpoint.protection.middleware');
 
 const app = express();
 app.use(express.json()); //parses incoming requests as JSON

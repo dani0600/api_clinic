@@ -24,7 +24,7 @@ const AuthorizationRouter = require('./routes/auth');
 const UsersRouter = require('./routes/users');
 
 // Middleware
-const { endpointProtection } = require('./middlewares/endpoint.protection.middleware');
+const { endpointProtection } = require('./services/middlewares/endpoint.protection.middleware');
 
 const app = express();
 const port = process.env.PORT || 4000;

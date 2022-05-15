@@ -9,7 +9,14 @@ const expositionsCollectionName = 'expositions';
 const postalCodeCollectionName = 'postalCodes';
 const suggestionsCollectionName = 'suggestions';
 
-
+const arsenicCollectionName = 'arsenic';
+const benzopyreneCollectionName = 'benzopyrene';
+const cadmiumCollectionName = 'cadmium';
+const leadCollectionName = 'lead';
+const nickelCollectionName = 'nickel';
+const pm10CollectionName = 'pm10';
+const pm2_5CollectionName = 'pm2_5';
+const radonCollectionName = 'radon';
 
 function checkString(string) {
     return typeof string === 'string' && string.trim().length > 0
@@ -26,5 +33,13 @@ module.exports = {
     postalCodeCollectionName,
     worklifesCollectionName,
     expositionsCollectionName,
-    suggestionsCollectionName
+    suggestionsCollectionName,
+    arsenicCollectionName,
+    cadmiumCollectionName,
+    benzopyreneCollectionName,
+    leadCollectionName,
+    nickelCollectionName,
+    pm10CollectionName,
+    pm2_5CollectionName,
+    radonCollectionName
 }
