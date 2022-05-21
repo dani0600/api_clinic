@@ -26,6 +26,16 @@ router.get('/count', async function(req, res, next) {
     }
 })
 
+router.get('/locations', endpointProtection, async function(req, res, next) {
+    try {
+        const persons = await personModel.getLocations(req.query);
+        res.status(200).send(persons);
+    }
+    catch(error){
+        next(error);
+    } 
+})
+
 
 router.get('/ageRanges', endpointProtection, async function(req, res, next) {
   try {
