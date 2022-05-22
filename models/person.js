@@ -1,10 +1,7 @@
-const { ObjectId } = require("mongodb");
 const db = require('./../app');
-const { checkString } = require('./../utils');
 const { personsCollectionName } = require('./../utils');
-const { tumorsCollectionName } = require('./../utils');
-var ageCalculator = require('age-calculator');
-let {AgeFromDateString, AgeFromDate} = require('age-calculator');
+let {AgeFromDateString} = require('age-calculator');
+const { ObjectId } = require('mongoose');
 
 
 async function getAll() {
@@ -142,6 +139,14 @@ async function getAll() {
   return await aggCursor.toArray();
 }
 
+async function deleteForm(idPerson){
+  var myquery = { _id: new ObjectId(idPerson)};
+  db.getCollection(personsCollectionName).deleteOne(myquery, function(err, obj) {
+    if (err) throw err;
+    console.log(obj);
+  });
+}
+
 async function exportPersonsToExcel(){
 
  return await this.getAll()
@@ -244,6 +249,7 @@ module.exports = {
   getAgeRanges,
   exportPersonsToExcel,
   countTotalPersons,
+  deleteForm
   
 }
 

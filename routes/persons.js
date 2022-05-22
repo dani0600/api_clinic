@@ -73,4 +73,16 @@ router.post('/upload', endpointProtection, async function(req, res, next) {
   }
 })
 
+router.delete('/:personId', endpointProtection, async function(req, res, next) {
+    try {
+        await personModel.deleteForm(req.params.personId);
+        res.status(204).send();
+    }
+    catch(error){
+        next(error);
+    }
+  })
+
+
+
 module.exports = router;
