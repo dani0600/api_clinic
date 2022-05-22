@@ -1,6 +1,6 @@
 const express = require("express");
 const metastasisModel = require('./../models/metastasis');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+const {endpointProtection} = require('../services/middlewares/endpoint.protection.middleware');
 
 
 const router = express.Router()

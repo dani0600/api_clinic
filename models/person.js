@@ -146,6 +146,37 @@ async function deleteForm(idPerson){
     console.log(obj);
   });
 }
+async function getLocations() {
+  const collection = db.getCollection(personsCollectionName);
+  const aggCursor = await collection.aggregate([
+    {
+      $project: {
+          _id: 1,
+          livingPlaces: {
+              $map: {
+                  input: "$livingPlaces",
+                  as: 'livingPlaces',
+                  in: {
+                      $convert: {
+                          input: '$$livingPlaces',
+                          to: 'objectId'
+                      }
+                  }
+              }
+          }
+        }
+    },
+    {
+        $lookup: {
+          from: "livingplaces",
+          localField: "livingPlaces",
+          foreignField: "_id",
+          as: "livingPlaces"
+        },
+    }
+  ]);
+  return await aggCursor.toArray();
+}
 
 async function exportPersonsToExcel(){
 
@@ -247,10 +278,8 @@ module.exports = {
   getAll,
   add,
   getAgeRanges,
+  getLocations,
   exportPersonsToExcel,
   countTotalPersons,
-  deleteForm
-  
+  deleteForm,  
 }
-
-

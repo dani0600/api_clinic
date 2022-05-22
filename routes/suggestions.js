@@ -1,6 +1,6 @@
 const express = require("express");
 const suggestionModel = require('./../models/suggestion');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+const {endpointProtection} = require('../services/middlewares/endpoint.protection.middleware');
 const { checkProperties } = require("../models/relative");
 
 const router = express.Router()

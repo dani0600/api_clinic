@@ -19,12 +19,13 @@ const relatives = require("./routes/relatives");
 const worklifes = require("./routes/worklifes");
 const suggestions = require("./routes/suggestions");
 const postalCodes = require("./routes/postalCodes");
+const contaminants = require("./routes/contaminants");
 const forms = require("./routes/forms");
 const AuthorizationRouter = require('./routes/auth');
 const UsersRouter = require('./routes/users');
 
 // Middleware
-const { endpointProtection } = require('./middlewares/endpoint.protection.middleware');
+const { endpointProtection } = require('./services/middlewares/endpoint.protection.middleware');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -36,11 +37,19 @@ UsersRouter.routesConfig(app);
 
 app.use(cors({
     origin: [
-        'http://localhost:3000',
-        'https://localhost:4000'
+       "https://git.heroku.com/apiclinic",
+       "https://lungtrackerweb.web.app",
+       "http://localhost:4200",
+       "http://localhost:3000",
+       "https://localhost:4000",
     ],
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'UPDATE', 'HEAD', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Accept', 'Authorization', 'Content-Type', 'X-Requested-With', 'Range'],
+    exposedHeader: ['Content-Length'],
     optionsSuccessStatus: 200 // some legacy browsers didn't work with 204
-}));
+   }
+ ));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -67,6 +76,7 @@ app.use('/worklifes', worklifes);
 app.use('/relatives', relatives);
 app.use('/suggestions', suggestions);
 app.use('/postalCodes', postalCodes);
+app.use('/contaminants', contaminants);
 app.use('/upload', forms);
 app.use('/expositions', expositions);
 

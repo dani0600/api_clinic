@@ -1,7 +1,7 @@
 const express = require("express");
 const personModel = require('./../models/person');
 const expositionModel = require('./../models/exposition');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+const {endpointProtection} = require('../services/middlewares/endpoint.protection.middleware');
 var csv = require('csv-express');
 
 const router = express.Router()
@@ -24,6 +24,16 @@ router.get('/count', async function(req, res, next) {
     catch(error){
         next(error);
     }
+})
+
+router.get('/locations', endpointProtection, async function(req, res, next) {
+    try {
+        const persons = await personModel.getLocations(req.query);
+        res.status(200).send(persons);
+    }
+    catch(error){
+        next(error);
+    } 
 })
 
 

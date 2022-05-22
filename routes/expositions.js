@@ -1,6 +1,6 @@
 const express = require("express");
 const expositionModel = require('./../models/exposition');
-const {endpointProtection} = require('../middlewares/endpoint.protection.middleware');
+const {endpointProtection} = require('../services/middlewares/endpoint.protection.middleware');
 
 const router = express.Router()
 

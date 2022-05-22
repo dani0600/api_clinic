@@ -1,6 +1,6 @@
 const UsersController = require('../auth/users/controllers/users.controller');
-const PermissionMiddleware = require('../middlewares/auth.permission.middleware');
-const ValidationMiddleware = require('../middlewares/auth.validation.middleware');
+const PermissionMiddleware = require('../services/middlewares/auth.permission.middleware');
+const ValidationMiddleware = require('../services/middlewares/auth.validation.middleware');
 
 exports.routesConfig = function (app) {
     app.post('/users', [
