@@ -142,11 +142,15 @@ function buildTumors(info, id){
         main: true,
         diagnoseYear: tumor.diagnoseYear,
         type: tumor.cancerType,
+        nonmicrocyticSubtype: tumor.nonmicrocyticSubtype,
         mutation: tumor.mutation,
         mutationType: tumor.mutationType,
         operatedCancer: tumor.operatedCancer,
         operationYear: tumor.operationYear,
         extraTreatment: tumor.extraTreatment,
+        hasReceivedComplementaryRadiotherapy: tumor.hasReceivedComplementaryRadiotherapy,
+        complementaryRadiotherapyTarget: tumor.complementaryRadiotherapyTarget,
+        isClinicalTrial: tumor.isClinicalTrial,
         metastasis: tumor.metastasis,
         metastasisYear: tumor.metastasisYear,
         notListedMetastasisTreatment: tumor.notListedTreatment,
@@ -155,12 +159,13 @@ function buildTumors(info, id){
         noSurgeryTreatment: tumor.noSurgeryTreatment,
         previousDiseases: tumor.previousDiseases
     }
+    console.log(tum);
     tumorsIds.push(tum._id);
     tumorsObj.push(tum);
     return {tumorsIds, tumorsObj, diagnosesObj, diagnosesIds};
 }
 
-function buildOtherDiagnoses(info, id){
+function buildOtherDiagnoses(info, id, relative = false){
     let diagnosesIds = [];
     let diagnosesObj = [];
     for (let diagnose of info){
@@ -173,7 +178,7 @@ function buildOtherDiagnoses(info, id){
             diagnoseYear: diagnose.diagnoseYear,
             metastasis: diagnose.metastasis,
             metastasisYear: diagnose.metastasisYear,
-            extraTreatment: diagnose.extraTreatment
+            extraTreatment: diagnose.extraTreatment ? diagnose.extraTreatment : undefined
         }
         diagnosesIds.push(cancer._id);
         diagnosesObj.push(cancer);
