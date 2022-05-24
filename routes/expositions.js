@@ -17,8 +17,18 @@ router.get('/', endpointProtection, async function(req, res, next) {
 router.get('/classified', endpointProtection, async function(req, res, next) {
   
   try {
-    console.log("HOLA")
       const expositions = await expositionModel.getClassifiedExpositions();
+      res.status(200).send(expositions);
+  }
+  catch(error){
+      next(error);
+  }
+});
+
+router.get('/smokerStats', endpointProtection, async function(req, res, next) {
+  
+  try {
+      const expositions = await expositionModel.getSmokersStats();
       res.status(200).send(expositions);
   }
   catch(error){

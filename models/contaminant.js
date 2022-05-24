@@ -90,7 +90,11 @@ async function getStations(latitude, longitude, country) {
         }
     }
 }
+async function getAllRadon(){
+    return await radonModel.getAll()
+}
 
 module.exports = {
-    getStations
+    getStations,
+    getAllRadon
   }

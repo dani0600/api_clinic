@@ -16,6 +16,17 @@ router.get('/', async function(req, res, next) {
     }
 })
 
+router.get('/allDataRadon',async function(req, res, next) {
+    try{
+        
+        const radonStations = await contaminantsModel.getAllRadon();
+        res.status(200).send(radonStations);
+    }
+    catch(error){
+        next(error);
+    }
+})
+
 
 
   

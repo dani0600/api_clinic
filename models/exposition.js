@@ -69,10 +69,46 @@ async function getClassifiedExpositions(){
       return await aggCursor.toArray();
 
 }
+async function getSmokersStats(){
+  const collection = db.getCollection(expositionsCollectionName);
+  const aggCursor = await collection.aggregate([
+    {
+      '$project': {
+        'smoker':1,
+        'endAge': 1,
+      }
+    },
+    {
+      '$project': 
+        {
+          "grupo": {
+                   $concat: [
+                      { $cond: [{$eq: ["$smoker",false]}, "No fumador", ""]}, 
+                      { $cond: [{ $and: [ {$eq: ["$smoker",true]}, {$eq: ["$endAge", null]}]}, "Fumador", ""] },
+                      { $cond: [{ $and: [ {$eq: ["$smoker",true]}, {$ne: ["$endAge", null]}]}, "ExFumador", ""] }
+                   ]
+                } 
+        }
+    },{
+      '$group':  {
+        '_id': {
+          'grupo': '$grupo'
+        }, 
+        'Total': {
+          '$sum': 1
+        }
+      }
+    } 
+      ]);
+      return await aggCursor.toArray();
+
+}
+
 
 
 module.exports = {
     getAll,
     add,
-    getClassifiedExpositions
+    getClassifiedExpositions,
+    getSmokersStats
 }

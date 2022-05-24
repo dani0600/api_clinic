@@ -40,8 +40,24 @@ async function get(latitude, longitude) {
     return nearestStation;
 }
 
+async function getAll(){
+    const collection = db.getCollection(radonCollectionName);
+    const aggCursor = await collection.aggregate([
+        {
+          '$project': {
+            'LAT':1,
+            'LON': 1,
+            'Nivell': 1
+            }
+        }
+        
+      ]);
+      return await aggCursor.toArray();
+}
+
 
 
 module.exports = {
-    get
+    get,
+    getAll
 }

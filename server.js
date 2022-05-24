@@ -10,6 +10,7 @@ require("dotenv").config();
 
 // Routes
 const persons = require("./routes/persons");
+const radon = require("./routes/stations/radon");
 const tumors = require("./routes/tumors");
 const surgeries = require("./routes/surgeries");
 const metastasis = require("./routes/metastasis");
@@ -43,6 +44,7 @@ app.use('/worklifes', worklifes);
 app.use('/expositions', expositions);
 app.use('/livingplaces', livingPlaces);
 app.use('/relatives', relatives);
+app.use('/radon',radon);
 app.use('/suggestions', suggestions);
 app.use('/postalCodes', postalCodes);
 app.use('/contaminants', contaminants);
