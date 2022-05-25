@@ -165,7 +165,7 @@ function buildTumors(info, id){
     return {tumorsIds, tumorsObj, diagnosesObj, diagnosesIds};
 }
 
-function buildOtherDiagnoses(info, id, relative = false){
+function buildOtherDiagnoses(info, id){
     let diagnosesIds = [];
     let diagnosesObj = [];
     for (let diagnose of info){
@@ -178,7 +178,7 @@ function buildOtherDiagnoses(info, id, relative = false){
             diagnoseYear: diagnose.diagnoseYear,
             metastasis: diagnose.metastasis,
             metastasisYear: diagnose.metastasisYear,
-            extraTreatment: diagnose.extraTreatment ? diagnose.extraTreatment : undefined
+            extraTreatment: diagnose.extraTreatment
         }
         diagnosesIds.push(cancer._id);
         diagnosesObj.push(cancer);
