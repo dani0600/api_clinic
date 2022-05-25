@@ -94,12 +94,6 @@ function checkToxics(toxics){
       message: 'Route: The field Start Age is required and must be a number'
     }
   }
-  if(toxics.smoker && typeof toxics.endAge !== 'number'){
-    throw { 
-      code: 400,
-      message: 'Route: The field End Age is required and must be a number'
-    }
-  }
   if(toxics.smoker && typeof toxics.avgCigarrettes !== 'number'){
     throw { 
       code: 400,
