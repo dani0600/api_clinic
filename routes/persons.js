@@ -26,7 +26,7 @@ router.get('/count', async function(req, res, next) {
     }
 })
 
-router.get('/locations', endpointProtection, async function(req, res, next) {
+router.get('/locations',  async function(req, res, next) {
     try {
         const persons = await personModel.getLocations(req.query);
         res.status(200).send(persons);
