@@ -188,7 +188,7 @@ function buildLivingPlaces(info, id){
     let livingPlace = {
         _id: ObjectId(),
         person: id,
-        country: place.country.name,
+        //country: place.country.name,
         city: place.city,
         state: place.state,
         postalCode: place.postalCode,
@@ -204,7 +204,7 @@ function buildLivingPlaces(info, id){
     let bornPlace = {
         _id: ObjectId(),
         person: id,
-        country: born.country.name,
+        //country: born.country.name,
         city: born.city,
         state: born.state,
         postalCode: born.postalCode,

@@ -65,8 +65,8 @@ async function getCitiesByProvince(province){
           provincia: 1,
           poblacion: 1,
           codigopostalid: 1,
-          lat: 1,
-          lon: 1            
+          lon: 1,
+          lat: 1            
         }
     }
 

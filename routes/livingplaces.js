@@ -4,7 +4,7 @@ const {endpointProtection} = require('../services/middlewares/endpoint.protectio
 
 const router = express.Router();
 
-router.get('/', endpointProtection, async function(req, res, next) {
+router.get('/',  async function(req, res, next) {
     
     // Access the count parameter
     let type = req.query.count;
