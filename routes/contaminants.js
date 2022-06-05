@@ -7,8 +7,7 @@ router.get('/', async function(req, res, next) {
     try{
         let latitude = req.query.latitude;
         let longitude = req.query.longitude;
-        let country = req.query.country;
-        const contaminants = await contaminantsModel.getStations(latitude, longitude, country);
+        const contaminants = await contaminantsModel.getStations(latitude, longitude);
         res.status(200).send(contaminants);
     }
     catch(error){
